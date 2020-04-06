@@ -12,3 +12,12 @@ _site/
 .jekyll-cache/
 .jekyll-metadata
 vendor
+Gemfile.lock
+
+### Node ###
+node_modules/
+package-json.lock
+npm-debug.log*
+
+### OS dependant files ###
+.DS_Store

@@ -1,0 +1,18 @@
+name: Malkomich
+title: Malkomich | Tech Blog
+description: A tech blog from a tech guy.
+tags:
+  - blog
+  - jekyll
+  - tech
+  - netlify
+email: malkomich@gmail.com
+disqus_username: malkomich
+show_hero: true
+menu:
+  - title: Home
+    url: /
+  - title: About
+    url: /about
+  - title: Contact
+    url: /contact

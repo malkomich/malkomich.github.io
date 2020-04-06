@@ -1,49 +1,15 @@
 # Site Settings
-name: Malkomich
-title: Malkomich | Tech Blog
-description: A tech blog from a tech guy.
-tags:
-  - blog
-  - jekyll
-  - tech
-  - netlify
-email: malkomich@gmail.com
-disqus_username: malkomich
-show_hero: true
-menu:
-  - title: Home
-    url: /
-  - title: About
-    url: /about
-  - title: Contact
-    url: /contact
-
+#=include site.yml
 
 # Social Media Settings
 # Remove the item if you don't need it
-github_username: malkomich
-facebook_username: malkomich
-twitter_username: malkomich
-instagram_username: malkomich
-linkedin_username: juancarlos-gonzalez-cabrero
-medium_username: malkomich
-
+#=include social.yml
 
 # Posts Settings
-show_time_bar: true
-show_modal_on_exit: false
-show_modal_on_finish_post: true
-two_columns_layout: true
-
+#=include posts.yml
 
 # Advanced Settings
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
-google_analytics: "UA-XXXXXXXX-X"
-language: "en"
-categories_folder: category
-sent_message_url: "/contact/message-sent/"
-
+#=include advanced.yml
 
 # Build settings
 markdown: kramdown
