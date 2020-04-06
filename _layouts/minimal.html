@@ -9,9 +9,11 @@ layout: compress
         {% include svg-icons.html %}
         {% include header.html %}
         <section class="post">
-            <article id="post" class="post-content fullwidth" role="main">
-                {{ content }}
-            </article>
+            <div class="wrapper">
+                <article id="post" class="post-content fullwidth" role="main">
+                    {{ content }}
+                </article>
+            </div>
         </section>
         {% include footer.html %}
     </body>

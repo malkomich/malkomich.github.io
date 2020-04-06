@@ -22,3 +22,32 @@ $itemMinWidth: 300px;
 
 // Settings
 $maxItemsPerRow: 6;
+
+/* Breakpoint widths */
+$small: 320px !default;
+$medium: 768px !default;
+$large: 1024px !default;
+$xlarge: 1280px !default;
+
+/* Fluid type */
+$base-font-size: 16px !default;
+$min-vw: $small !default;
+$max-vw: $xlarge !default;
+$min-font-size: 14px !default;
+$max-font-size: 18px !default;
+
+/* Width of the sidebar */
+$sidebar-width: $small !default;
+
+/* Navicon */
+$navicon-width: 1.60em !default;
+$navicon-height: 0.22em !default;
+$navicon-duration: 0.5s !default;
+$navicon-toggled-size: 1 !default;
+$navicon-nav-bg-close: transparent !default;
+$navicon-nav-bg-open: transparent !default;
+$navicon-content-bg: $texts !default;
+
+/* Site image */
+$site-image-width: 50px !default;
+$site-image-height: 50px !default;

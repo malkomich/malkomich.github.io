@@ -7,56 +7,58 @@
         {% include header.html %}
 
         <section class="post {% if site.two_columns_layout %}two-columns{% else %}one-column{% endif %}">
-            <article role="article" class="post-content">
-                <p class="post-info">
-                    {% if page.date %}
-                        <svg class="icon-calendar" id="date"><use xlink:href="#icon-calendar"></use></svg>
-                        <time class="date" datetime="{{ page.date | date_to_xmlschema }}">
-                            {% include date.html date=page.date %}
-                        </time>
+            <div class="wrapper">
+                <article role="article" class="post-content">
+                    <p class="post-info">
+                        {% if page.date %}
+                            <svg class="icon-calendar" id="date"><use xlink:href="#icon-calendar"></use></svg>
+                            <time class="date" datetime="{{ page.date | date_to_xmlschema }}">
+                                {% include date.html date=page.date %}
+                            </time>
+                        {% endif %}
+                        <svg id="clock" class="icon-clock"><use xlink:href="#icon-clock"></use></svg>
+                        <span>{{ minutesText }}</span>
+                    </p>
+                    <h1 class="post-title">{{ page.title }}</h1>
+                    <p class="post-subtitle">{{ page.subtitle }}</p>
+
+                    {% if page.image and paginator.activated == nil %}
+                        <img src="{{ page.image }}" alt="Featured image" class="post-cover">
                     {% endif %}
-                    <svg id="clock" class="icon-clock"><use xlink:href="#icon-clock"></use></svg>
-                    <span>{{ minutesText }}</span>
-                </p>
-                <h1 class="post-title">{{ page.title }}</h1>
-                <p class="post-subtitle">{{ page.subtitle }}</p>
 
-                {% if page.image and paginator.activated == nil %}
-                    <img src="{{ page.image }}" alt="Featured image" class="post-cover">
+                    {% include pagination-post.html progressBar=true %}
+
+                    {% include toc.html %}
+
+                    {{ content }}
+
+                    {% include pagination-post.html %}
+                </article>
+
+                {% if site.two_columns_layout %}
+                    <aside class="see-also">
+                        <h2>{{ site.translations.text.see_also | default: "See also" }}</h2>
+                        <ul>
+                            {% assign next_posts = site.posts | where_exp:"post","post.is_generated != true" | where_exp:"post","post.path != page.path" %}
+                            {% assign shuffled_array = next_posts | shuffle %}
+                            {% for post in shuffled_array limit:3 %}
+                                <li>
+                                    <a href="{{ post.url | prepend: site.baseurl }}">
+                                        {% if post.optimized_image %}
+                                            <img src="{{ post.optimized_image }}">
+                                        {% elsif post.image %}
+                                            <img src="{{ post.image }}">
+                                        {% else %}
+                                            <img src="/assets/img/off.jpg">
+                                        {% endif %}
+                                        <h3>{{ post.title }}</h3>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </aside>
                 {% endif %}
-
-                {% include pagination-post.html progressBar=true %}
-
-                {% include toc.html %}
-
-                {{ content }}
-
-                {% include pagination-post.html %}
-            </article>
-
-            {% if site.two_columns_layout %}
-                <aside class="see-also">
-                    <h2>{{ site.translations.text.see_also | default: "See also" }}</h2>
-                    <ul>
-                        {% assign next_posts = site.posts | where_exp:"post","post.is_generated != true" | where_exp:"post","post.path != page.path" %}
-                        {% assign shuffled_array = next_posts | shuffle %}
-                        {% for post in shuffled_array limit:3 %}
-                            <li>
-                                <a href="{{ post.url | prepend: site.baseurl }}">
-                                    {% if post.optimized_image %}
-                                        <img src="{{ post.optimized_image }}">
-                                    {% elsif post.image %}
-                                        <img src="{{ post.image }}">
-                                    {% else %}
-                                        <img src="/assets/img/off.jpg">
-                                    {% endif %}
-                                    <h3>{{ post.title }}</h3>
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </aside>
-            {% endif %}
+            </div>
 
         </section>
 
