@@ -3,14 +3,10 @@ let gulp         = require('gulp'),
     imagemin     = require('gulp-imagemin'),
     include      = require('gulp-include'),
     plumber      = require('gulp-plumber'),
-    rename       = require('gulp-rename'),
     sourcemaps   = require('gulp-sourcemaps'),
     uglify       = require('gulp-uglify'),
-    yaml         = require('gulp-yaml'),
     browserSync  = require('browser-sync'),
-    cp           = require('child_process'),
-    del          = require('del'),
-    source       = require('vinyl-source-stream');
+    cp           = require('child_process');
 
 /**
  * Notify

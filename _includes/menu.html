@@ -1,6 +1,23 @@
-<aside class="sidebar" id="sidebar">
-    <nav id="navigation">
-      <h2>Menu</h2>
-      {% include links.html %}
-    </nav>
-</aside>
+<!--<aside class="sidebar" id="sidebar">-->
+<!--    <div class="inner">-->
+<!--        <nav id="navigation">-->
+<!--          {% include links.html %}-->
+<!--        </nav>-->
+<!--    </div>-->
+<!--</aside>-->
+
+<nav id="primary-nav" itemscope itemtype="http://schema.org/SiteNavigationElement" aria-label="Main navigation">
+    <ul class="menu">
+        {% for item in site.menu %}
+        {% if item.title and item.url %}
+        <li>
+            <a href="{{ site.url }}{{ site.baseurl }}{{ item.url }}" itemprop="url">
+                <span itemprop="name">
+                    {{ item.title }}
+                </span>
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>

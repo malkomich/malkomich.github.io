@@ -1,7 +1,4 @@
 <header class="bar-header">
-    <a id="menu" role="button">
-        <svg id="open" class="icon-menu"><use xlink:href="#icon-menu"></use></svg>
-    </a>
     <h1 class="logo">
         <a href="{{ site.baseurl }}/">
             {% if site.use_logo %}
@@ -11,12 +8,28 @@
             {% endif %}
         </a>
     </h1>
-    <a id="search" class="dosearch" role="button">
-        <svg class="icon-search"><use xlink:href="#icon-search"></use></svg>
-    </a>
+    <div class="sidebar-toggle-wrapper">
+        <a id="search" class="dosearch" role="button">
+            <svg class="icon-search"><use xlink:href="#icon-search"></use></svg>
+        </a>
+<!--        TODO: remove menu id if JS not needed -->
+        <button id="menu" class="toggle navicon-button larr" type="button">
+            <span class="toggle-inner">
+              <span class="sidebar-toggle-label visually-hidden">
+                  {{ site.data.theme.t.menu | default: 'Menu' }}
+              </span>
+              <span class="navicon"></span>
+            </span>
+        </button>
+    </div>
 </header>
 
 <div id="mask" class="overlay"></div>
 
-{% include menu.html %}
+<div id="sidebar" class="sidebar">
+    <div class="inner">
+        {% include menu.html %}
+    </div>
+</div>
+
 {% include search.html %}
