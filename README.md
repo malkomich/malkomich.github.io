@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/38ae83e3-75f3-4f94-8611-283c580b9ac0/deploy-status)](https://app.netlify.com/sites/malkomich/deploys)
+
 ### Run steps
 
 1. `npm i`: Install dependencies
