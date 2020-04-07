@@ -5,16 +5,23 @@ layout: compress
 <!DOCTYPE html>
 <html lang="{{ site.language }}" class="no-js">
     {% include head.html %}
-    <body class="has-push-menu">
-        {% include svg-icons.html %}
-        {% include header.html %}
-        <section class="post">
+    <body>
+
+        {% include sidebar-toggle.html %}
+
+        {% include sidebar.html %}
+
+        <div class="canvas">
             <div class="wrapper">
-                <article id="post" class="post-content fullwidth" role="main">
-                    {{ content }}
-                </article>
+                {% include svg-icons.html %}
+                {% include header.html %}
+                <section class="post">
+                    <article id="post" class="post-content fullwidth" role="main">
+                        {{ content }}
+                    </article>
+                </section>
+                {% include footer.html %}
             </div>
-        </section>
-        {% include footer.html %}
+        </div>
     </body>
 </html>

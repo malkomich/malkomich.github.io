@@ -8,28 +8,6 @@
             {% endif %}
         </a>
     </h1>
-    <div class="sidebar-toggle-wrapper">
-        <a id="search" class="dosearch" role="button">
-            <svg class="icon-search"><use xlink:href="#icon-search"></use></svg>
-        </a>
-<!--        TODO: remove menu id if JS not needed -->
-        <button id="menu" class="toggle navicon-button larr" type="button">
-            <span class="toggle-inner">
-              <span class="sidebar-toggle-label visually-hidden">
-                  {{ site.data.theme.t.menu | default: 'Menu' }}
-              </span>
-              <span class="navicon"></span>
-            </span>
-        </button>
-    </div>
 </header>
-
-<div id="mask" class="overlay"></div>
-
-<div id="sidebar" class="sidebar">
-    <div class="inner">
-        {% include menu.html %}
-    </div>
-</div>
 
 {% include search.html %}

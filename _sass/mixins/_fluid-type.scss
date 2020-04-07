@@ -1,3 +1,12 @@
+/* ==========================================================================
+   Fluid Type
+   as seen on https://madebymike.com.au/writing/fluid-type-calc-examples/
+   ========================================================================== */
+
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
 @mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
   // scss-lint:disable UnnecessaryParentReference
   $u1: unit($min-vw);
