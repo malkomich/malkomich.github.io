@@ -7,6 +7,9 @@ $primaryDark: map-get($theme, primaryDark) !default;
 $accentDark: map-get($theme, accentDark) !default;
 $lightGray: map-get($theme, lightGray) !default;
 $texts: map-get($theme, texts) !default;
+$headerDark: map-get($theme, headerDark) !default;
+$headerLight: map-get($theme, headerLight) !default;
+$headerMain: map-get($theme, headerMain) !default;
 
 // Breakpoints
 $breakpoints: (
@@ -51,3 +54,6 @@ $navicon-content-bg: $texts !default;
 /* Site image */
 $site-image-width: 50px !default;
 $site-image-height: 50px !default;
+
+/* Global transition */
+$global-transition: all 0.4s ease !default;

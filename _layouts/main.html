@@ -5,15 +5,23 @@ layout: compress
 <!DOCTYPE html>
 <html lang="{{ site.language }}" class="no-js">
     {% include head.html %}
-    <body class="main-page has-push-menu">
-        {% include svg-icons.html %}
-        {% include header.html %}
-            <section class="content">
-                <div class="wrapper">
-                    {{ content }}
-                </div>
-            </section>
-        {% include footer.html %}
+    <body class="main-page">
+
+        {% include sidebar-toggle.html %}
+
+        {% include sidebar.html %}
+
+        <div class="canvas">
+            <div class="wrapper">
+                {% include svg-icons.html %}
+                {% include header.html %}
+                    <section class="content">
+                        {{ content }}
+                    </section>
+                {% include footer.html %}
+            </div>
+        </div>
+
         <script>
             if (window.netlifyIdentity) {
                 window.netlifyIdentity.on("init", function(user) {
