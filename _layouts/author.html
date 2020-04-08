@@ -3,10 +3,16 @@ layout: page
 ---
 
 <div class="staff">
-  {% if page.photo %}
-    <img class="img-rounded" src="{{ page.photo }}" alt="{{ author.display_name }}">
+  {% if page.photo_front %}
+    <div class="row">
+        <div class="flip-effect">
+            <div class="img img-rounded"></div>
+        </div>
+    </div>
   {% else %}
-    <img class="img-rounded" src="/assets/img/user.jpg" alt="{{ author.display_name }}">
+    <div class="img">
+        <img class="img-rounded" src="/assets/img/user.jpg" alt="{{ page.display_name }}">
+    </div>
   {% endif %}
 
   <h1 class="name">{{ page.display_name }}</h1>
@@ -66,3 +72,12 @@ layout: page
     ]
 }
 </script>
+
+<style>
+.flip-effect .img {
+    background-image: url({{ page.photo_front }});
+}
+.flip-effect:hover .img {
+    background-image: url({{ page.photo_back }});
+}
+</style>
