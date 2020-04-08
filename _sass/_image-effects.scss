@@ -1,0 +1,52 @@
+.img-rounded {
+  border-radius: 50%;
+}
+
+/**
+ * Author images
+ */
+.author, .staff {
+  .flip-effect {
+    width: rem(150px);
+    height: rem(150px);
+    display: block;
+    margin: auto;
+
+    @include media(">=sm") {
+      width: rem(180px);
+      height: rem(180px);
+      float: left;
+      margin-right: 3.125rem;
+    }
+
+    .img {
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+    }
+  }
+}
+
+/**
+ * Image flip effect
+ */
+.flip-effect {
+  -webkit-perspective: 900px;
+  -moz-perspective: 900px;
+  perspective: 900px;
+
+  &:hover .img {
+    -webkit-transform: rotate3d(0, 1, 0, 180deg);
+    -moz-transform: rotate3d(0, 1, 0, 180deg);
+    -ms-transform: rotate3d(0, 1, 0, 180deg);
+    -o-transform: rotate3d(0, 1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg);
+  }
+
+  .img {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+  }
+}
