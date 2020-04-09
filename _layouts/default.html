@@ -6,14 +6,11 @@ layout: compress
 <html lang="{{ site.language }}" class="no-js">
     {% include head.html %}
     <body>
-
+        {% include svg-icons.html %}
         {% include sidebar-toggle.html %}
-
         {% include sidebar.html %}
-
         <div class="canvas">
             <div class="wrapper">
-                {% include svg-icons.html %}
                 {% include header.html %}
                     <section class="content">
                         {{ content }}

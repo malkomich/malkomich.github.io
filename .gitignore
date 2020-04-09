@@ -21,3 +21,7 @@ npm-debug.log*
 
 ### OS dependant files ###
 .DS_Store
+
+### Static resources ###
+assets/js/scripts.min.js
+assets/js/scripts.min.js.map
