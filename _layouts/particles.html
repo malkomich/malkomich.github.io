@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}" class="no-js">
+{% include head.html %}
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<body class="main-page">
+
+    <div id="particles-js" class="particles">
+        {{ content }}
+    </div>
+
+<script>
+    if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", function(user) {
+            if (!user) {
+                window.netlifyIdentity.on("login", function() {
+                    document.location.href = "/admin/";
+                });
+            }
+        });
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        particlesJS.load('particles-js', '/assets/particles.json', function() {});
+    });
+</script>
+</body>
+</html>

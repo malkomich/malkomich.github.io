@@ -1,0 +1,92 @@
+.particles {
+  background: $primaryDark;
+
+  .particles-js-canvas-el {
+    width:100% !important;
+    height:100vh !important;
+  }
+
+  .header {
+    text-align: center;
+    color: $accentDark;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    .site-title {
+      color: $accentDark;
+      font-size: 50px;
+      line-height: 1;
+
+      @include media(">=sm") {
+        font-size: 100px;
+      }
+    }
+
+    .site-description {
+      color: $accentDark;
+      font-size: 20px;
+      display: block;
+      line-height: 1;
+      margin-top: 10px;
+
+      @include media(">=sm") {
+        font-size: 40px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .header-icons {
+      display: flex;
+      justify-content: center;
+
+      a {
+        color: $accentDark;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 50%;
+        border: 2px solid $accentDark;
+        transition: all .7s;
+
+        &:hover, &:active {
+          color: $primaryDark;
+          background: $accentDark;
+        }
+
+        @include media(">=sm") {
+          width: 35px;
+          height: 35px;
+          font-size: 35px;
+        }
+      }
+    }
+
+    .header-links ul {
+      display: flex;
+
+      li {
+        flex: 1;
+        text-decoration: none;
+        font-size: 15px;
+        margin: 10px;
+        transition: all .7s;
+
+        @include media(">=sm") {
+          font-size: 20px;
+        }
+
+        &:hover, &:active {
+          color: $themeColor;
+        }
+      }
+    }
+  }
+}

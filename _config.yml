@@ -12,11 +12,12 @@ disqus_username: malkomich
 show_hero: true
 menu:
   - title: Home
-    url: /
+    url: /blog
   - title: About
     url: /about
   - title: Contact
     url: /contact
+blog_url: /blog
 
 
 # Social Media Settings
