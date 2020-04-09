@@ -3,38 +3,42 @@
     {% include head.html %}
     <body class="main-page">
         {% include svg-icons.html %}
-        {% include header.html %}
-        <section class="content">
-            <main class="home" id="post" role="main">
-                <h1 class="title-category">/{{page.title}}</h1>
-                <div id="grid" class="row flex-grid">
-                    {% assign posts = site.posts | where_exp:"post","post.is_generated != true" %}
-                    {% for post in posts %}
-                        {% if post.category == page.slug %}
+        {% include sidebar-toggle.html %}
+        {% include sidebar.html %}
+        <div class="canvas">
+            <div class="wrapper">
+                {% include header.html %}
+                <section class="content">
+                    <main class="home" id="post" role="main">
+                        <h1 class="title-category">/{{page.title}}</h1>
+                        <div id="grid" class="row flex-grid">
+                            {% assign posts = site.posts | where_exp:"post","post.is_generated != true" %}
+                            {% for post in posts %}
+                            {% if post.category == page.slug %}
                             <article class="box-item">
                                 <div class="box-body">
                                     {% if post.image %}
-                                        <a class="cover" href="{{ post.url | prepend: site.baseurl }}">
-                                            {% include loader.html %}
-                                            {% if post.optimized_image %}
-                                                <img src="/assets/img/placeholder.png" width="100%" data-url="{{ post.optimized_image }}" class="preload">
-                                                <noscript>
-                                                    <img src="{{ post.optimized_image }}" width="100%">
-                                                </noscript>
-                                            {% elsif post.image %}
-                                                <img src="/assets/img/placeholder.png" width="100%" data-url="{{ post.image }}" class="preload">
-                                                <noscript>
-                                                    <img src="{{ post.image }}" width="100%">
-                                                </noscript>
-                                            {% else %}
-                                                <img src="/assets/img/placeholder.png" width="100%" data-url="/assets/img/off.jpg" class="preload">
-                                                <noscript>
-                                                    <img src="/assets/img/off.jpg" width="100%">
-                                                </noscript>
-                                            {% endif %}
-                                            {% include new-post-tag.html date=post.date %}
-                                            {% include read-icon.html %}
-                                        </a>
+                                    <a class="cover" href="{{ post.url | prepend: site.baseurl }}">
+                                        {% include loader.html %}
+                                        {% if post.optimized_image %}
+                                        <img src="/assets/img/placeholder.png" width="100%" data-url="{{ post.optimized_image }}" class="preload">
+                                        <noscript>
+                                            <img src="{{ post.optimized_image }}" width="100%">
+                                        </noscript>
+                                        {% elsif post.image %}
+                                        <img src="/assets/img/placeholder.png" width="100%" data-url="{{ post.image }}" class="preload">
+                                        <noscript>
+                                            <img src="{{ post.image }}" width="100%">
+                                        </noscript>
+                                        {% else %}
+                                        <img src="/assets/img/placeholder.png" width="100%" data-url="/assets/img/off.jpg" class="preload">
+                                        <noscript>
+                                            <img src="/assets/img/off.jpg" width="100%">
+                                        </noscript>
+                                        {% endif %}
+                                        {% include new-post-tag.html date=post.date %}
+                                        {% include read-icon.html %}
+                                    </a>
                                     {% endif %}
                                     <div class="box-info">
                                         <time datetime="{{ post.date | date_to_xmlschema }}" class="date">
@@ -50,20 +54,22 @@
                                         </a>
                                         <div class="tags">
                                             {% for tag in post.tags %}
-                                                {% if tag != "" %}
-                                                    <a href="{{ site.baseurl}}/tags/#{{tag | slugify }}">#{{ tag }}</a>
-                                                {% endif %}
+                                            {% if tag != "" %}
+                                            <a href="{{ site.baseurl}}/tags/#{{tag | slugify }}">#{{ tag }}</a>
+                                            {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
                                 </div>
                             </article>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </main>
-        </section>
-        {% include footer.html %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </main>
+                </section>
+                {% include footer.html %}
+            </div>
+        </div>
     </body>
 </html>
 
