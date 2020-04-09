@@ -1,7 +1,6 @@
 /**
  * Set up here the general appearance of the theme.
  */
-
 $themeColor: map-get($theme, themeColor) !default;
 $primaryDark: map-get($theme, primaryDark) !default;
 $accentDark: map-get($theme, accentDark) !default;

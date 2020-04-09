@@ -1,3 +1,48 @@
 ---
-layout: home
+layout: particles
 ---
+
+<div class="header">
+    <a href="{{ site.blog_url }}">
+        <h1>
+            <span class="site-title">{{ site.title }}</span>
+            <span class="site-description">{{ site.description }}</span>
+        </h1>
+    </a>
+
+    <div class="header-icons">
+        {% if site.email %}
+        <a href="mailto:{{ site.email }}">
+            <i class="icon fa fa-envelope"></i>
+        </a>
+        {% endif %}
+
+        {% if site.twitter_username %}
+        <a href="https://twitter.com/{{ site.twitter_username }}" title="Twitter">
+            <i class="icon fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        {% if site.instagram_username %}
+        <a href="https://www.instagram.com/{{ site.instagram_username }}" title="Instagram">
+            <i class="icon fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        {% if site.linkedin_username %}
+        <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" title="LinkedIn">
+            <i class="icon fa fa-linkedin" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        {% if site.github_username %}
+            <a href="https://github.com/{{ site.github_username }}" title="Github">
+                <i class="icon fa fa-github-alt" aria-hidden="true"></i>
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="header-links">
+        {% include menu.html %}
+    </div>
+</div>
