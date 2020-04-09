@@ -7,7 +7,7 @@ tags:
   - tech
   - netlify
 email: malkomich@gmail.com
-disqus_username: malkomich
+disqus_identifier: malkomich-github-io
 show_hero: true
 menu:
   - title: Home

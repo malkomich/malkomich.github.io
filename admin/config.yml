@@ -239,8 +239,8 @@ collections:
             widget: "string"
             hint: "Leave it blank if you don't want a contact page"
             required: false
-          - label: "Disqus Username"
-            name: "disqus_username"
+          - label: "Disqus Identifier"
+            name: "disqus_identifier"
             widget: "string"
             hint: "Leave it blank if you don't want comments in posts"
             required: false
