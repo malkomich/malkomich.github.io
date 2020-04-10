@@ -1,11 +1,7 @@
 <header class="bar-header">
     <h1 class="logo">
         <a href="{{ site.baseurl }}/">
-            {% if site.use_logo %}
-                {% include logo.html %}
-            {% else %}
-                {{ site.name }} <span class="version">{{ site.version }}</span>
-            {% endif %}
+            {{ site.name }}
         </a>
     </h1>
 </header>

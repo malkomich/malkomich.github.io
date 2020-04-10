@@ -1,6 +1,6 @@
 {
   "name": "malkomich.github.io",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A tech blog from a tech guy",
   "main": "gulpfile.js",
   "homepage": "malkomich.github.io",

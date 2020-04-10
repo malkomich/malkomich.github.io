@@ -21,6 +21,7 @@ body {
     margin: rem(5px) rem(20px) rem(5px) 0;
     height: rem(32px);
     line-height: rem(32px);
+    font-family: 'Major Mono Display';
 
     @include media(">=sm") {
       margin: rem(5px) rem(20px) rem(5px) rem(25px);
@@ -34,29 +35,6 @@ body {
       position: relative;
       outline: 0;
     }
-
-    svg {
-      width: rem(120px);
-      height: rem(30px);
-      transition: all .4s;
-  
-      @include media(">=sm") {
-        width: rem(205px);
-      }
-    }
-  }
-
-  .version {
-    color: $accentDark;
-    font-size: rem(10px);
-    font-weight: normal;
-    line-height: 1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: block;
-    transform: translateX(110%);
-    opacity: 0.3;
   }
 }
 
@@ -82,8 +60,7 @@ body.light:not(.main-page) {
       fill: $primaryDark;
     }
 
-    .logo a,
-    .version {
+    .logo a {
       color: $primaryDark;
     }
   }

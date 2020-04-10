@@ -55,7 +55,6 @@ collections:
     output: true
 paginate_path: "/page/:num/"
 show_get_theme_btn: true
-use_logo: false
 
 # Content paginator
 paginate_content:
@@ -95,6 +94,3 @@ exclude: [
   'Gemfile.lock',
   'gulpfile.js'
 ]
-
-# Theme
-version: v3.1.0

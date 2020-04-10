@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ site.language }}" class="no-js">
 {% include head.html %}
-<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <body class="main-page">
 
     <div id="particles-js" class="particles">
         {{ content }}
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <script>
     if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", function(user) {
