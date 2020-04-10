@@ -29,7 +29,6 @@
                     console.log(x);
                     console.log(y);
                     console.log(z);
-                    // x.responseText should have what's wrong
                 }
             });
         }
