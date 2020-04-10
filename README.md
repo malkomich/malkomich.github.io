@@ -1,5 +1,8 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/38ae83e3-75f3-4f94-8611-283c580b9ac0/deploy-status)](https://app.netlify.com/sites/malkomich/deploys)
-[![Jekyll](https://img.shields.io/badge/jekyll-%3E%3D%203.8.6-yellow.svg)](https://jekyllrb.com/)
+[![Node](https://img.shields.io/badge/Node-13.5.0-informational.svg?style=for-the-badge&logo=node.js)](https://nodejs.org/es/)
+[![NPM](https://img.shields.io/badge/NPM-6.14.4-informational.svg?style=for-the-badge&logo=npm)](https://www.npmjs.com/)
+[![Jekyll](https://img.shields.io/badge/Jekyll-%3E%3D%203.8.6-informational.svg?style=for-the-badge&logo=jekyll&logoColor=critical)](https://jekyllrb.com/)
+[![Jekflix](https://img.shields.io/badge/Jekflix-3.1.0-informational?style=for-the-badge&logo=github&logoColor=black)](https://github.com/thiagorossener/jekflix-template)
 
 ### Run steps
 
@@ -24,3 +27,9 @@
     * **author**: One author defined in `_authors/<author>.md`.
     * **paginate**: To break your post into pages. Use the divider --page-break-- where you want to break it.
 4. Write the post
+
+
+### Theme & dependencies
+
+- Based on the awesome [Jekflix](https://github.com/thiagorossener/jekflix-template) theme, by [@ThiagoRossener](https://github.com/thiagorossener) 
+- Particles animation for index page, based on [ParticlesJS](https://github.com/VincentGarreau/particles.js)
