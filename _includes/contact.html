@@ -1,0 +1,42 @@
+<ul class="contact">
+    {% if site.github_username %}
+    <li>
+        <a href="https://github.com/{{ site.github_username }}" title="Github">
+            <svg><use xlink:href="#icon-github"></use></svg>
+            <span class="label">GitHub</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if site.twitter_username %}
+    <li>
+        <a href="https://twitter.com/{{ site.twitter_username }}" title="Twitter">
+            <svg><use xlink:href="#icon-twitter"></use></svg>
+            <span class="label">Twitter</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if site.medium_username %}
+    <li>
+        <a href="https://medium.com/@{{ site.medium_username }}" title="Medium">
+            <svg><use xlink:href="#icon-medium"></use></svg>
+            <span class="label">Medium</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if site.instagram_username %}
+    <li>
+        <a href="https://www.instagram.com/{{ site.instagram_username }}" title="Instagram">
+            <svg><use xlink:href="#icon-instagram"></use></svg>
+            <span class="label">Instagram</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if site.linkedin_username %}
+    <li>
+        <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" title="LinkedIn">
+            <svg><use xlink:href="#icon-linkedin"></use></svg>
+            <span class="label">LinkedIn</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>

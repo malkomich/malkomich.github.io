@@ -167,10 +167,6 @@ collections:
         name: "github_username"
         widget: "string"
         required: false
-      - label: "Facebook Username"
-        name: "facebook_username"
-        widget: "string"
-        required: false
       - label: "Twitter Username"
         name: "twitter_username"
         widget: "string"
@@ -250,10 +246,6 @@ collections:
         fields:
           - label: "GitHub Username"
             name: "github_username"
-            widget: "string"
-            required: false
-          - label: "Facebook Username"
-            name: "facebook_username"
             widget: "string"
             required: false
           - label: "Twitter Username"

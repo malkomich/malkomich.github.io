@@ -32,25 +32,6 @@ footer {
     font-weight: 700;
   }
 
-  svg {
-    @include size(28, 28);
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: rem(10px);
-
-    @include media(">=sm") {
-      margin-right: rem(20px);
-    }
-
-    &.love {
-      @include size(20, 20);
-      fill: $themeColor;
-      margin-top: rem(-2px);
-      margin-left: rem(3px);
-      margin-right: rem(3px);
-    }
-  }
-
   a {
     display: inline-block;
     fill: #808080;
@@ -64,6 +45,10 @@ footer {
     
     &.creator:hover {
       text-decoration: underline;
+    }
+
+    .label {
+      display: none;
     }
   }
 

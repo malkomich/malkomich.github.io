@@ -1,0 +1,38 @@
+.contact {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+
+  svg {
+    @include size(28, 28);
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: rem(10px);
+
+    @include media(">=sm") {
+      margin-right: rem(20px);
+    }
+
+    &.love {
+      @include size(20, 20);
+      fill: $themeColor;
+      margin-top: rem(-2px);
+      margin-left: rem(3px);
+      margin-right: rem(3px);
+    }
+  }
+
+  a {
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none;
+
+    &:hover {
+      fill: $themeColor;
+    }
+
+    &.creator:hover {
+      text-decoration: underline;
+    }
+  }
+}

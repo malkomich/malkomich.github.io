@@ -7,7 +7,6 @@ display_name: Juan Carlos Gonzalez
 position: Backend Software Engineer
 bio: The backend guy.
 github_username: malkomich
-facebook_username: malkomich
 twitter_username: malkomich
 instagram_username: malkomich
 linkedin_username: juancarlos-gonzalez-cabrero
