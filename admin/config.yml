@@ -146,9 +146,9 @@ collections:
         widget: "hidden"
         default: "author"
       - label: "Photo"
-        name: "photo"
+        name: "photo_front"
         widget: "image"
-        required: false
+        default: "/assets/img/uploads/profile.png"
         hint: "Use a square picture"
       - label: "Short Name"
         name: "name"
@@ -183,6 +183,11 @@ collections:
         name: "medium_username"
         widget: "string"
         required: false
+      - label: "Back Photo"
+        name: "photo_back"
+        widget: "image"
+        required: false
+        hint: "Use a square picture"
   - label: "Settings"
     name: "settings"
     editor:
