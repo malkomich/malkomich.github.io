@@ -1,15 +1,12 @@
 # Site Settings
-name: Malkomich
-title: Malkomich | Tech Blog
-description: A tech blog from a tech guy.
+name: malkomich
+title: Malkomich Tech Blog
+description: All boils down to code
 tags:
-  - blog
-  - jekyll
-  - tech
-  - netlify
-email: malkomich@gmail.com
-disqus_identifier: malkomich-github-io
-show_hero: true
+  - software
+  - developer
+  - github
+  - java
 menu:
   - title: Home
     url: /blog
@@ -17,7 +14,10 @@ menu:
     url: /about
   - title: Contact
     url: /contact
+disqus_identifier: malkomich-github-io
 blog_url: /blog
+show_hero: true
+email: malkomich@gmail.com
 
 
 # Social Media Settings

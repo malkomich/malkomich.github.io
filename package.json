@@ -10,7 +10,7 @@
   },
   "scripts": {
     "preinstall": "bundle install",
-    "build": "bundle exec jekyll build",
+    "build": "bundle exec jekyll build && gulp build",
     "dev": "gulp",
     "post": "./initpost.sh -c"
   },
