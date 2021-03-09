@@ -13,7 +13,7 @@ menu:
     url: /about
   - title: Contact
     url: /contact
-disqus_identifier: malkomich-github-io
+disqus_identifier: malkomich
 blog_url: /blog
 show_hero: true
 email: malkomich@gmail.com
