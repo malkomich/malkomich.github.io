@@ -23,20 +23,52 @@ For this reason, the simplest thing when implementing an authorization layer thr
 
 This article guides you through the creation of a simple library which will allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
 
-## 2. Building the OAuth2 request
+## 2. Setting up the required dependencies
+
+We will need a few libraries to build our custom OAuth2 client.
+
+First of all, the Apache HTTP client library, which will provide us with the HTTP client for the integration with the authorization server, as well as a toolset for the request building. So it would be the core library for our client.
+
+In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants `class. We could also defined those values by ourselves, to get rid of that dependency.
+
+Lastly, we include the json library. This library is a helpful toolset when we are handling JSON data. It is really useful to parse and manipulate JSON in Java.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-security-oauth2</artifactId>
+        <version>3.4.2</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20160212</version>
+    </dependency>
+</dependencies>
+```
+
+## 3. Building the OAuth2 request
 
 We have to build the request to the server which will authorize our service as a granted client.
 To achieve this, we need to define the OAuth2 configuration we are using, including the grant type, the authorization server URL, the credentials for the given grant type, and the scope for the resource we are requesting.
 
 ```java
-public class OAuth2Config {
-  private String grantType;
-  private String clientId;
-  private String clientSecret;
-  private String username;
-  private String password;
-  private String accessTokenUri;
-  private String scope;
+class OAuth2Config {
+  String grantType;
+  String clientId;
+  String clientSecret;
+  String username;
+  String password;
+  String accessTokenUri;
+  String scope;
 }
 ```
 
@@ -48,35 +80,174 @@ As defined in the [OAuth 2.0 Authorization Protocol specification](https://tools
 Depending on the grant type we define, we must define different parameters on the POST request.
 
 ```java
-final List<NameValuePair> formData = new ArrayList<>();
-formData.add(new BasicNameValuePair(GRANT_TYPE, config.getGrantType()));
+HttpUriRequest buildRequest() {
+  List<NameValuePair> formData = new ArrayList<>();
+  formData.add(new BasicNameValuePair(GRANT_TYPE, config.getGrantType()));
 
-if (config.getScope() != null && !config.getScope().isBlank()) {
-  formData.add(new BasicNameValuePair(SCOPE, config.getScope()));
+  if (config.getScope() != null && !config.getScope().isBlank()) {
+    formData.add(new BasicNameValuePair(SCOPE, config.getScope()));
+  }
+
+  if (CLIENT_CREDENTIALS_GRANT.equals(config.getGrantType())) {
+    formData.add(new BasicNameValuePair(CLIENT_ID, config.getClientId()));
+    formData.add(new BasicNameValuePair(CLIENT_SECRET, config.getClientSecret()));
+  }
+
+  if (RESOURCE_OWNER_GRANT.equals(config.getGrantType())) {
+    formData.add(new BasicNameValuePair(RESOURCE_OWNER_NAME, config.getUsername()));
+    formData.add(new BasicNameValuePair(RESOURCE_OWNER_PASSWORD, config.getPassword()));
+  }
+
+  return RequestBuilder.create(HttpPost.METHOD_NAME)
+                       .setUri(config.getAccessTokenUri())
+                       .setEntity(new UrlEncodedFormEntity(formData, StandardCharsets.UTF_8))
+                       .build();
 }
-
-if (CLIENT_CREDENTIALS_GRANT.equals(config.getGrantType())) {
-  formData.add(new BasicNameValuePair(CLIENT_ID, config.getClientId()));
-  formData.add(new BasicNameValuePair(CLIENT_SECRET, config.getClientSecret()));
-}
-
-if (RESOURCE_OWNER_GRANT.equals(config.getGrantType())) {
-  formData.add(new BasicNameValuePair(RESOURCE_OWNER_NAME, config.getUsername()));
-  formData.add(new BasicNameValuePair(RESOURCE_OWNER_PASSWORD, config.getPassword()));
-}
-
-return RequestBuilder.create(HttpPost.METHOD_NAME)
-    .setUri(config.getAccessTokenUri())
-    .setEntity(new UrlEncodedFormEntity(formData, StandardCharsets.UTF_8))
-    .build();
 ```
 
-## 3. Executing the OAuth2 request
+## 4. Executing the OAuth2 request
+
+We will use the default HTTP client from ***Apache HTTP*** library, to send our request to the authorization server.
+
+```java
+CloseableHttpResponse doRequest(HttpUriRequest request) {
+  CloseableHttpClient httpClient = HttpClients.createDefault();
+  try {
+    return httpClient.execute(request);
+  } catch (IOException e) {
+    throw new OAuth2ClientException("An error occurred executing the request.", e);
+  }
+}
+```
+
+Once we receive the response, we need to handle it, extracting the information we need for the access token.
+
+```java
+class OAuth2Response {
+  HttpEntity httpEntity;
+}
+```
+
+We should check for errors before parsing the content to get the access token. We can consider here errors in the credentials we defined, a wrong or malformed URL, or any internal error from the authorization server.
+
+```java
+OAuth2Response execute(HttpUriRequest request) {
+  CloseableHttpResponse httpResponse = doRequest(request);
+  HttpEntity httpEntity              = httpResponse.getEntity();
+  int statusCode                     = httpResponse.getStatusLine()
+                                                   .getStatusCode();
+  if (statusCode >= 400) {
+    throw new OAuth2ClientException(statusCode, httpEntity);
+  }
+  return new OAuth2Response(httpEntity);
+}
+```
+
+Typically, the response content will come on a JSON format, with the access token data in a key-value schema. However, we should consider a server handling the data on a different format, like XML or URL encoded.
+
+For the scope of this article, we will consider our authorization server are giving us a JSON formatted content.
+
+```java
+JSONObject handleResponse(HttpEntity entity) {
+  String content     = extractEntityContent(entity);
+  String contentType = Optional.ofNullable(entity.getContentType())
+                               .map(Header::getValue)
+                               .orElse(APPLICATION_JSON.getMimeType());
+  return new JSONObject(content);
+}
+
+String extractEntityContent(HttpEntity entity) {
+  try {
+    return EntityUtils.toString(entity, StandardCharsets.UTF_8);
+  } catch (IOException e) {
+    throw new OAuth2ClientException("An error occurred while extracting entity content.", e);
+  }
+}
+```
+
+The easiest way to handle the JSON response, is through the ***org.json:json*** library, since we can map the whole `String `directly to a `JSONObject`.
+
+## 5. Putting all together
+
+The goal here is to obtain an access token to call the secured services we need. However, sometimes we also need to know some additional data, like the timestamp when the token is going to expire, the token type we are receiving, or the refresh token in the case the grant type is defined so.
+
+```java
+class AccessToken {
+  long expiresIn;
+  String tokenType;
+  String refreshToken;
+  String accessToken;
+
+  AccessToken(JSONObject jsonObject) {
+    expiresIn    = jsonObject.optLong(ACCESS_TOKEN_EXPIRES_IN);
+    tokenType    = jsonObject.optString(ACCESS_TOKEN_TYPE);
+    refreshToken = jsonObject.optString(REFRESH_TOKEN);
+    accessToken  = jsonObject.optString(ACCESS_TOKEN);
+  }
+}
+```
+
+Finally, we will get a client which will retrieve the access token data we need, based on the configuration we defined.
+
+```java
+AccessToken accessToken() {
+  HttpUriRequest request  = buildRequest();
+  OAuth2Response response = execute(request);
+
+  return new AccessToken(handleResponse(response.getHttpEntity()));
+}
+```
 
 
 
-\`\``java
+## 6. Put into practice
+
+But, how could we integrate this custom client in our service?
+
+Well, as I mentioned at the beginning of the article, the idea of this custom OAuth2 client is to be isolated from the framework and/or the HTTP client we are using to consume the secured services.
+
+So I will show you a few examples of how to integrate it in different service environments.
 
 
 
-\`\``
+#### 6.1 Spring Framework - WebClient
+
+```java
+class WebClientConfig {
+
+  @Bean(name = "securedWebClient")
+  WebClient fetchWebClient(@Value("${host}") String host,
+                           OAuth2Config oAuth2Config) {
+    OAuth2Client oAuth2Client = new OAuth2Client(oAuth2Config);
+    return WebClient.builder()
+                    .filter(new OAuth2ExchangeFilter(oAuth2Client))
+                    .baseUrl(host)
+                    .build();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "security.oauth2.config")
+  OAuth2Config oAuth2Config() {
+    return new OAuth2Config();
+  }
+
+  class OAuth2ExchangeFilter implements ExchangeFilterFunction {
+    
+    OAuth2Client oAuth2Client;
+
+    @Override
+    public Mono<ClientResponse> filter(ClientRequest request,
+                                       ExchangeFunction next) {
+      String token = Optional.ofNullable(oAuth2Client.accessToken())
+                             .map(AccessToken::getAccessToken)
+                             .map("Bearer "::concat)
+                             .orElseThrow(() -> new AccessDeniedException());
+
+      ClientRequest newRequest = ClientRequest.from(request)
+                                              .header(HttpHeaders.AUTHORIZATION, token)
+                                              .build();
+      return next.exchange(newRequest);
+    }
+  }
+}
+```
