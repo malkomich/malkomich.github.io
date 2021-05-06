@@ -29,7 +29,7 @@ We will need a few libraries to build our custom OAuth2 client.
 
 First of all, the Apache HTTP client library, which will provide us with the HTTP client for the integration with the authorization server, as well as a toolset for the request building. So it would be the core library for our client.
 
-In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants `class. We could also defined those values by ourselves, to get rid of that dependency.
+In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants`class. We could also defined those values by ourselves, to get rid of that dependency.
 
 Lastly, we include the json library. This library is a helpful toolset when we are handling JSON data. It is really useful to parse and manipulate JSON in Java.
 
@@ -165,7 +165,7 @@ String extractEntityContent(HttpEntity entity) {
 }
 ```
 
-The easiest way to handle the JSON response, is through the ***org.json:json*** library, since we can map the whole `String `directly to a `JSONObject`.
+The easiest way to handle the JSON response, is through the ***org.json:json*** library, since we can map the whole `String`directly to a `JSONObject`.
 
 ## 5. Putting all together
 
@@ -198,8 +198,6 @@ AccessToken accessToken() {
 }
 ```
 
-
-
 ## 6. Put into practice
 
 But, how could we integrate this custom client in our service?
@@ -207,8 +205,6 @@ But, how could we integrate this custom client in our service?
 Well, as I mentioned at the beginning of the article, the idea of this custom OAuth2 client is to be isolated from the framework and/or the HTTP client we are using to consume the secured services.
 
 So I will show you a few examples of how to integrate it in different service environments.
-
-
 
 #### 6.1 Spring Framework - WebClient
 
@@ -247,6 +243,33 @@ class WebClientConfig {
                                               .header(HttpHeaders.AUTHORIZATION, token)
                                               .build();
       return next.exchange(newRequest);
+    }
+  }
+}
+```
+
+#### 6.2 Spring Framework - Feign Client
+
+```java
+class FeignClientConfig {
+
+  @Bean
+  OAuthRequestInterceptor repositoryClientOAuth2Interceptor(OAuth2Client oAuth2Client) {
+    return new OAuthRequestInterceptor(oAuth2Client);
+  }
+
+  class OAuthRequestInterceptor implements RequestInterceptor {
+
+    OAuth2Client oAuth2Client;
+
+    @Override
+    public void apply(RequestTemplate requestTemplate) {
+      String authToken = Optional.ofNullable(oAuth2Client.accessToken())
+                                 .map(AccessToken::getAccessToken)
+                                 .map("Bearer "::concat)
+                                 .orElseThrow(() -> new AccessDeniedException());
+
+      requestTemplate.header(HttpHeaders.AUTHORIZATION, authToken);
     }
   }
 }
