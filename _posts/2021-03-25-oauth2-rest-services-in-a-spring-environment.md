@@ -23,8 +23,6 @@ For this reason, the simplest thing when implementing an authorization layer thr
 
 This article guides you through the creation of a simple library which will allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
 
-
-
 ## 2. Building the OAuth2 request
 
 We have to build the request to the server which will authorize our service as a granted client.
@@ -43,7 +41,11 @@ public class OAuth2Config {
 ```
 
 Once given we have the configuration values initialized, we can use them to build the HTTP request for the authorization server.
-As defined in the 
+As defined in the [OAuth 2.0 Authorization Protocol specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-22):
+
+> The client MUST use the HTTP "POST" method when making access token requests.
+
+Depending on the grant type we define, we must define different parameters on the POST request.
 
 ```java
 final List<NameValuePair> formData = new ArrayList<>();
@@ -69,5 +71,12 @@ return RequestBuilder.create(HttpPost.METHOD_NAME)
     .build();
 ```
 
+## 3. Executing the OAuth2 request
 
-## 3. Put into practice
+
+
+\`\``java
+
+
+
+\`\``
