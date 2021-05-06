@@ -23,12 +23,51 @@ For this reason, the simplest thing when implementing an authorization layer thr
 
 This article guides you through the creation of a simple library which will allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
 
+
+
 ## 2. Building the OAuth2 request
 
-We have to build the request to the server which will authenticate our service as a granted client.
+We have to build the request to the server which will authorize our service as a granted client.
+To achieve this, we need to define the OAuth2 configuration we are using, including the grant type, the authorization server URL, the credentials for the given grant type, and the scope for the resource we are requesting.
 
+```java
+public class OAuth2Config {
+  private String grantType;
+  private String clientId;
+  private String clientSecret;
+  private String username;
+  private String password;
+  private String accessTokenUri;
+  private String scope;
+}
+```
 
+Once given we have the configuration values initialized, we can use them to build the HTTP request for the authorization server.
+As defined in the 
 
+```java
+final List<NameValuePair> formData = new ArrayList<>();
+formData.add(new BasicNameValuePair(GRANT_TYPE, config.getGrantType()));
+
+if (config.getScope() != null && !config.getScope().isBlank()) {
+  formData.add(new BasicNameValuePair(SCOPE, config.getScope()));
+}
+
+if (CLIENT_CREDENTIALS_GRANT.equals(config.getGrantType())) {
+  formData.add(new BasicNameValuePair(CLIENT_ID, config.getClientId()));
+  formData.add(new BasicNameValuePair(CLIENT_SECRET, config.getClientSecret()));
+}
+
+if (RESOURCE_OWNER_GRANT.equals(config.getGrantType())) {
+  formData.add(new BasicNameValuePair(RESOURCE_OWNER_NAME, config.getUsername()));
+  formData.add(new BasicNameValuePair(RESOURCE_OWNER_PASSWORD, config.getPassword()));
+}
+
+return RequestBuilder.create(HttpPost.METHOD_NAME)
+    .setUri(config.getAccessTokenUri())
+    .setEntity(new UrlEncodedFormEntity(formData, StandardCharsets.UTF_8))
+    .build();
+```
 
 
 ## 3. Put into practice
