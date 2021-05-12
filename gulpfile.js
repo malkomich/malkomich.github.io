@@ -6,14 +6,14 @@ let gulp         = require('gulp'),
     sourcemaps   = require('gulp-sourcemaps'),
     uglify       = require('gulp-uglify'),
     browserSync  = require('browser-sync'),
-    cp           = require('child_process');
+    spawn        = require('cross-spawn');
 
 /**
  * Notify
- * 
+ *
  * Show a notification in the browser's corner.
- * 
- * @param {*} message 
+ *
+ * @param {*} message
  */
 function notify(message) {
   browserSync.notify(message);
@@ -21,7 +21,7 @@ function notify(message) {
 
 /**
  * Config Task
- * 
+ *
  * Build the main YAML config file.
  */
 function config() {
@@ -33,25 +33,23 @@ function config() {
 
 /**
  * Jekyll Task
- * 
+ *
  * Build the Jekyll Site.
- * 
- * @param {*} done 
+ *
+ * @param {*} done
  */
 function jekyll(done) {
   notify('Building Jekyll...');
-  let bundle = process.platform === "win32" ? "bundle.bat" : "bundle";
-  return cp
-    .spawn(bundle, ['exec', 'jekyll build'], { stdio: 'inherit' })
-    .on('close', done);
+  return spawn('jekyll', ['build'], {stdio: 'inherit'})
+    .once('close', done);
 }
 
 /**
  * Server Task
- * 
+ *
  * Launch server using BrowserSync.
- * 
- * @param {*} done 
+ *
+ * @param {*} done
  */
 function server(done) {
   browserSync({
@@ -64,10 +62,10 @@ function server(done) {
 
 /**
  * Reload Task
- * 
+ *
  * Reload page with BrowserSync.
- * 
- * @param {*} done 
+ *
+ * @param {*} done
  */
 function reload(done) {
   notify('Reloading...');
@@ -77,7 +75,7 @@ function reload(done) {
 
 /**
  * Main JS Task
- * 
+ *
  * All regular .js files are collected, minified and concatonated into one
  * single scripts.min.js file (and sourcemap)
  */
@@ -96,7 +94,7 @@ function mainJs() {
 
 /**
  * Preview JS Task
- * 
+ *
  * Copy preview JS files to the assets folder.
  */
 function previewJs() {
@@ -107,14 +105,14 @@ function previewJs() {
 
 /**
  * JavaScript Task
- * 
+ *
  * Run all the JS related tasks.
  */
 const js = gulp.parallel(mainJs, previewJs);
 
 /**
  * Images Task
- * 
+ *
  * All images are optimized and copied to assets folder.
  */
 function images() {
@@ -127,7 +125,7 @@ function images() {
 
 /**
  * Watch Task
- * 
+ *
  * Watch files to run proper tasks.
  */
 function watch() {
@@ -164,7 +162,7 @@ exports.default = gulp.series(gulp.parallel(js, images), config, jekyll, gulp.pa
 
 /**
  * Build Task
- * 
+ *
  * Running just `gulp build` will:
  * - Compile the SASS and JavaScript files
  * - Optimize and copy images to its folder

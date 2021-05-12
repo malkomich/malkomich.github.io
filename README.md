@@ -6,9 +6,11 @@
 
 ### Run steps
 
-1. `npm i`: Install dependencies
-2. `npm run build`: Build Jekyll blog
-3. `npm run dev`: Run blog
+1. [Install Ruby with Dev Toolkit](https://rubyinstaller.org/downloads/) (Need permissions on Ruby installation folder)
+2. *ONLY WINDOWS* - `ridk install`: Install [MSYS2](https://www.msys2.org/) if not done in previous step (Need permissions on the installation folder)
+3. `npm i`: Install dependencies
+4. `npm run build`: Build Jekyll blog
+5. `npm run dev`: Run blog
 
 ### Create new Post
 
@@ -31,5 +33,5 @@
 
 ### Theme & dependencies
 
-- Based on the awesome [Jekflix](https://github.com/thiagorossener/jekflix-template) theme, by [@ThiagoRossener](https://github.com/thiagorossener) 
+- Based on the awesome [Jekflix](https://github.com/thiagorossener/jekflix-template) theme, by [@ThiagoRossener](https://github.com/thiagorossener)
 - Particles animation for index page, based on [ParticlesJS](https://github.com/VincentGarreau/particles.js)
