@@ -57,5 +57,6 @@ exclude: [
   'initpost.sh',
   'Gemfile',
   'Gemfile.lock',
-  'gulpfile.js'
+  'gulpfile.js',
+  'README.md'
 ]

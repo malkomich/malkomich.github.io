@@ -17,7 +17,7 @@
   "author": "Juan Carlos Gonzalez",
   "devDependencies": {
     "browser-sync": "^2.26.14",
-    "child_process": "^1.0.2",
+    "cross-spawn": "^7.0.3",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^6.2.0",
@@ -25,7 +25,7 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "lodash.merge": "^4.6.2"
   }
 }
