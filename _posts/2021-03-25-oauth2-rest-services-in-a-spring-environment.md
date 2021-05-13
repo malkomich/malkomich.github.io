@@ -18,19 +18,19 @@ paginate: false
 ---
 ## 1. Introduction
 
-When it comes to adding authorization to call secured services, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in one way or another.
+When it comes to adding authorization to call secured services, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
 
 For this reason, the simplest thing when implementing an authorization layer through OAuth2 to call those services, would be to outsource the generation of the tokens to a new personalized client. This way we would have a maintainable integration, isolated from the REST client we are using.
 
-This article guides you through the creation of a simple library which will allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
+This article guides you through the creation of a simple library which allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
 
 ## 2. Setting up the required dependencies
 
 We will need a few libraries to build our custom OAuth2 client.
 
-First of all, the Apache HTTP client library, which will provide us with the HTTP client for the integration with the authorization server, as well as a toolset for the request building. So it would be the core library for our client.
+First of all, the **Apache HTTP** client library, which will provide us with the HTTP client for the integration with the authorization server, as well as a toolset for the request building. So it would be the core library for our client.
 
-In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants`class. We could also defined those values by ourselves, to get rid of that dependency.
+In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants` class. We could also defined those values by ourselves, to get rid of that dependency.
 
 Lastly, we include the json library. This library is a helpful toolset when we are handling JSON data. It is really useful to parse and manipulate JSON in Java.
 
@@ -73,12 +73,12 @@ class OAuth2Config {
 }
 ```
 
-Once given we have the configuration values initialized, we can use them to build the HTTP request for the authorization server.
-As defined in the [OAuth 2.0 Authorization Protocol specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-22):
+Once we have the configuration values initialized, we can use them to build the HTTP request for the authorization server.
+Typically, the HTTP method used to get the access token, will be a POST, as defined in the [OAuth 2.0 Authorization Protocol specification](https://tools.ietf.org/html/draft-ietf-oauth-v2-22):
 
 > The client MUST use the HTTP "POST" method when making access token requests.
 
-Depending on the grant type we define, we must define different parameters on the POST request.
+Depending on the grant type we define, we must define different parameters on the POST request. We will use a list of `NameValuePair` to gather all those needed parameters.
 
 ```java
 HttpUriRequest buildRequest() {
@@ -108,7 +108,7 @@ HttpUriRequest buildRequest() {
 
 ## 4. Executing the OAuth2 request
 
-We will use the default HTTP client from ***Apache HTTP*** library, to send our request to the authorization server.
+Since we are building an OAuth2 client as basic as possible, we will use the default HTTP client from ***Apache HTTP*** library, to send our request to the authorization server.
 
 ```java
 CloseableHttpResponse doRequest(HttpUriRequest request) {
@@ -146,7 +146,7 @@ OAuth2Response execute(HttpUriRequest request) {
 
 Typically, the response content will come on a JSON format, with the access token data in a key-value schema. However, we should consider a server handling the data on a different format, like XML or URL encoded.
 
-For the scope of this article, we will consider our authorization server are giving us a JSON formatted content.
+For the scope of this article, we will consider our authorization server are giving us a JSON formatted content. The ***org.json:json*** library we included earlier will help us on the deserialization.
 
 ```java
 JSONObject handleResponse(HttpEntity entity) {
@@ -166,7 +166,7 @@ String extractEntityContent(HttpEntity entity) {
 }
 ```
 
-The easiest way to handle the JSON response, is through the ***org.json:json*** library, since we can map the whole `String`directly to a `JSONObject`.
+Given the `JSONObject`, it becomes much easier to handle the response, since we can retrieve instantly each value we are interested in.
 
 ## 5. Putting all together
 
@@ -188,7 +188,7 @@ class AccessToken {
 }
 ```
 
-Finally, we will get a client which will retrieve the access token data we need, based on the configuration we defined.
+Finally, we will get a client which will retrieve the access token data need to grant our calls to the services, based on the configuration we defined.
 
 ```java
 AccessToken accessToken() {
@@ -207,7 +207,7 @@ Well, as I mentioned at the beginning of the article, the idea of this custom OA
 
 So I will show you a few examples of how to integrate it in different service environments.
 
-#### 6.1 Spring Framework - WebClient
+#### 6.1. Spring Framework - WebClient
 
 ```java
 class WebClientConfig {
@@ -249,7 +249,7 @@ class WebClientConfig {
 }
 ```
 
-#### 6.2 Spring Framework - Feign Client
+#### 6.2. Spring Framework - Feign Client
 
 ```java
 class FeignClientConfig {
@@ -275,3 +275,9 @@ class FeignClientConfig {
   }
 }
 ```
+
+#### 7. Conclusion
+
+In this article, we have seen how we can set up a simple OAuth2 Client, and how we can integrate it in your REST calls to retrieve a secured resource from an external service.
+
+You can check the full code used for this article, the repository is available over on Github.
