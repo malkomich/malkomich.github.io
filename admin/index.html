@@ -264,69 +264,25 @@
     CMS.registerPreviewTemplate('pages', PagePreview);
   </script>
 
-  <!-- Register Image component -->
-  <!-- It's not possible to create this element just yet. There are two things needed in order to do so: -->
-  <!-- 1) Jekyll needs to update kramdown version up to 2.1.0, so we can use the :standlone feature with <figure></figure> -->
-  <!-- See: https://github.com/gettalong/kramdown/issues/48#issuecomment-455851003 -->
-  <!-- 2) However, it may not be possible, once Netlify CMS parses using Remark before parse using kramdown -->
-  <!-- See: https://github.com/netlify/netlify-cms/issues/1464#issuecomment-400470173 -->
-  <!-- Solution for now: -->
-  <!-- Keep using <img width="X" height="Y"> with <em></em> for caption -->
+  <!-- Set slugify default field -->
   <script>
-    // CMS.registerEditorComponent({
-    //   // Internal id of the component
-    //   id: "image",
-    //   // Visible label
-    //   label: "Image",
-    //   // Fields the user need to fill out when adding an instance of the component
-    //   fields: [
-    //     { name: 'image', label: 'Image', widget: 'image', allow_multiple: false },
-    //     { name: 'alt', label: 'Alternative Text', widget: 'string', required: false, hint: "Used for accessibility." },
-    //     { name: 'title', label: 'Title', widget: 'string', required: false, hint: "Shown on hover." },
-    //     { name: 'width', label: 'Width', widget: 'number', valueType: 'int', required: false },
-    //     { name: 'height', label: 'Height', widget: 'number', valueType: 'int', required: false },
-    //     { name: 'classes', label: 'Classes', widget: 'string', required: false },
-    //   ],
-    //   // Pattern to identify a block as being an instance of this component
-    //   pattern: /^!\[(.*?)\]\((.*?)\s*(?:\"(.*?)\")?\)(?:{:\s*(?:width="([0-9]*)")?\s*(?:height="([0-9]*)?")?\s*(?:class="(.*?)")?})?$/,
-    //   //image "(.*?)"(\s+alt="(.*?)")?(\s+caption="(.*?)")?(\s+([0-9]+)w)?(\s+([0-9]+)h)?
-    //   //image "(.*?)"(\s+alt="(.*?)")?(\s+classes="(.*?)")?(\s+caption="(.*?)")?(\s+([0-9]+)w)?(\s+([0-9]+)h)?
-    //   //<figure>\s*<img\s*src="(\S*)"\s*(?:alt="(.*?)")?\s*(?:class="(.*?)")?\s*(?:width="([0-9]*)")?\s*(?:height="([0-9]*)")?>\s*(?:<figcaption>(.*?)<\/figcaption>)?\s*<\/figure>
-    //   // Function to extract data elements from the regexp match
-    //   fromBlock: function (match) {
-    //     return {
-    //       alt: match[1] || '',
-    //       image: match[2] || '',
-    //       title: match[3] || '',
-    //       width: match[4] || '',
-    //       height: match[5] || '',
-    //       classes: match[6] || ''
-    //     };
-    //   },
-    //   // Function to create a text block from an instance of this component
-    //   toBlock: function (obj) {
-    //     var alt = obj.alt ? obj.alt : '';
-    //     var src = obj.image ? obj.image : '';
-    //     var title = obj.title ? ' "' + obj.title + '"' : '';
-    //     var width = obj.width ? ' width="' + obj.width + '"' : '';
-    //     var height = obj.height ? ' height="' + obj.height + '"' : '';
-    //     var classes = obj.classes ? ' class="' + obj.classes + '"' : '';
-    //     return '![' + alt + '](' + src + title + '){:' + width + height + classes + '}';
-    //   },
-    //   // Preview output for this component. Can either be a string or a React component
-    //   // (component gives better render performance)
-    //   toPreview: function (obj) {
-    //     var src = obj.image ? ' src="' + obj.image + '"' : '';
-    //     var alt = obj.alt ? ' alt="' + obj.alt + '"' : '';
-    //     var title = obj.title ? ' title="' + obj.title + '"' : '';
-    //     var classes = obj.classes ? ' class="' + obj.classes + '"' : '';
-    //     var width = obj.width ? ' width="' + obj.width + '"' : '';
-    //     var height = obj.height ? ' height="' + obj.height + '"' : '';
-    //     return (
-    //       '<img' + src + alt + title + classes + width + height + '>'
-    //     );
-    //   }
-    // });
+    const DEFAULTS = {
+      categories  : { field: 'slug',      valueSupplier: (slug) => slug },
+      pages       : { field: 'permalink', valueSupplier: (slug) => `/${slug}/` }
+    }
+
+    CMS.registerEventListener({
+      name: 'preSave',
+      handler: ({ entry }) => {
+        const collection = entry.get('collection');
+        const slug = entry.get('slug')
+          ? entry.get('slug')
+          : entry.getIn(['data', 'title'], '').toLowerCase().replace(/[']/g, '').replace(/[.]/g, '-').replace(/[\s]/g, '-');
+
+        return entry.get('data')
+                    .set(DEFAULTS[collection].field, DEFAULTS[collection].valueSupplier(slug))
+      },
+    });
   </script>
 </body>
 </html>
