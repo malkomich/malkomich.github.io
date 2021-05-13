@@ -1,6 +1,6 @@
 ---
 layout: category
 title: Java
-slug: "{{slug}}"
+slug: "java"
 description: ""
 ---
