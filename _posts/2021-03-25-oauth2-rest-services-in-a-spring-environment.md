@@ -4,7 +4,7 @@ layout: post
 title: Authenticating REST services with OAuth2
 description: REST services authenticated with an OAuth2 Client for Java
 optimized_image: /assets/img/uploads/image.jpg
-category: "{{slug}}"
+category: security
 tags:
   - OAuth2
   - REST
