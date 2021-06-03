@@ -144,6 +144,10 @@ OAuth2Response execute(HttpUriRequest request) {
 }
 ```
 
+We should not forget to close the `httpResponse`, to avoid the memory leakage. But is pretty important to wait until it is read properly, since it contains an InputStream which would become inaccessible once we have closed it.
+
+
+
 Typically, the response content will come on a JSON format, with the access token data in a key-value schema. However, we should consider a server handling the data on a different format, like XML or URL encoded.
 
 For the scope of this article, we will consider our authorization server are giving us a JSON formatted content. The ***org.json:json*** library we included earlier will help us on the deserialization.
@@ -275,6 +279,109 @@ class FeignClientConfig {
   }
 }
 ```
+
+#### 6.3. Vert.x - Web Client
+
+```java
+class ProtectedResourceHandler implements Handler<RoutingContext>  {
+
+  OAuth2Config oAuth2Config;
+
+  ProtectedResourceHandler() {
+    // Resource handler initialization
+    oAuth2Config = oauth2Config(config);
+  }
+
+  private OAuth2Config oauth2Config(JsonObject oauth2Properties) {
+    
+    return OAuth2Config.builder()
+        .grantType(oauth2Properties.getString("grantType"))
+        .accessTokenUri(oauth2Properties.getString("accessTokenUri"))
+        .clientId(oauth2Properties.getString("clientId"))
+        .clientSecret(oauth2Properties.getString("clientSecret"))
+        .username(oauth2Properties.getString("username"))
+        .password(oauth2Properties.getString("password"))
+        .scope(oauth2Properties.getString("scope"))
+        .build();
+  }
+
+  @Override
+  public void handle(RoutingContext routingContext) {
+
+    WebClient.create(routingContext.vertx())
+        .getAbs(host)
+        .uri(endpoint)
+        .putHeader(HttpHeaders.AUTHORIZATION.toString(), generateToken())
+        .send()
+        .onSuccess(httpResponse -> { /* Successful response handler */ })
+        .onFailure(err -> { /* Error response handler */ });
+  }
+
+  String generateToken() {
+
+    return Optional.of(OAuth2Client.withConfig(oAuth2Config).build())
+        .map(OAuth2Client::accessToken)
+        .map(AccessToken::getAccessToken)
+        .map("Bearer "::concat)
+        .orElseThrow(() -> new AccessDeniedException());
+  }
+}
+```
+
+
+
+#### 6.4. Quarkus - RestEasy
+
+```java
+@RegisterRestClient
+@RegisterClientHeaders(SecurityHeaderFactory.class)
+interface DocumentClient {
+  
+  // External endpoints definition
+}
+
+class SecurityHeaderFactory implements ClientHeadersFactory {
+
+  OAuth2Client oAuth2Client;
+
+  @Inject
+  SecurityHeaderFactory(OAuth2Properties oAuth2Properties) {
+    oAuth2Client = OAuth2Client
+        .withConfig(oauth2Config(oAuth2Properties))
+        .build();
+  }
+
+  @Override
+  public MultivaluedMap<String, String> update(MultivaluedMap<String, String> incomingHeaders,
+                                               MultivaluedMap<String, String> outgoingHeaders) {
+    outgoingHeaders.add(HttpHeaders.AUTHORIZATION.toString(), generateToken());
+    return outgoingHeaders;
+  }
+
+  String generateToken() {
+    return Optional.of(oAuth2Client)
+        .map(OAuth2Client::accessToken)
+        .map(AccessToken::getAccessToken)
+        .map("Bearer "::concat)
+        .orElseThrow(() -> new AccessDeniedException());
+  }
+
+  OAuth2Config oauth2Config(OAuth2Properties oAuth2Properties) {
+    return OAuth2Config.builder()
+        .grantType(oAuth2Properties.getGrantType())
+        .accessTokenUri(oAuth2Properties.getAccessTokenUri())
+        .clientId(oAuth2Properties.getClientId())
+        .clientSecret(oAuth2Properties.getClientSecret())
+        .username(oAuth2Properties.getUsername())
+        .password(oAuth2Properties.getPassword())
+        .scope(oAuth2Properties.getScope())
+        .build();
+  }
+}
+
+```
+
+
 
 #### 7. Conclusion
 
