@@ -24,6 +24,18 @@ For this reason, the simplest thing when implementing an authorization layer thr
 
 This article guides you through the creation of a simple library which allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
 
+![OAuth2 Schema](/assets/img/uploads/oauth-and-openid-connect-core-concepts1.png "OAuth2 Schema")
+
+The authorization flow is described in the image above:
+
+1. Authorization request is sent from client to OAuth server.
+2. Access token is returned to the client.
+3. Access token is then sent from client to the API service (acting as resource server) on each request for protected resource access.
+4. Resource server check the token with the OAuth server, to confirm the client is authorized to consume that resource.
+5. Server responds with required protected resources.
+
+
+
 ## 2. Setting up the required dependencies
 
 We will need a few libraries to build our custom OAuth2 client.
