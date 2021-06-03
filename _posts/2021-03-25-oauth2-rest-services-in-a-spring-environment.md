@@ -219,7 +219,7 @@ class WebClientConfig {
   @Bean(name = "securedWebClient")
   WebClient fetchWebClient(@Value("${host}") String host,
                            OAuth2Config oAuth2Config) {
-    OAuth2Client oAuth2Client = new OAuth2Client(oAuth2Config);
+    OAuth2Client oAuth2Client = OAuth2Client.withConfig(oAuth2Config).build();
     return WebClient.builder()
                     .filter(new OAuth2ExchangeFilter(oAuth2Client))
                     .baseUrl(host)
@@ -387,4 +387,4 @@ class SecurityHeaderFactory implements ClientHeadersFactory {
 
 In this article, we have seen how we can set up a simple OAuth2 Client, and how we can integrate it in your REST calls to retrieve a secured resource from an external service.
 
-You can check the full code used for this article, the repository is available over on Github.
+You can check the code used for the OAuth2 Client, the repository is available over on [Github](https://github.com/malkomich/oauth2-token-client).
