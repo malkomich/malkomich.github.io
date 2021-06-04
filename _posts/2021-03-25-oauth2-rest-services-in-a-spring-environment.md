@@ -1,5 +1,5 @@
 ---
-date: 2021-05-03 17:33:54
+date: 2021-06-04 15:07:57
 layout: post
 title: Authenticating REST services with OAuth2
 description: REST services authenticated with an OAuth2 Client for Java
@@ -13,6 +13,8 @@ tags:
   - authorization
   - security
   - Spring
+  - Vertx
+  - Quarkus
 author: malkomich
 paginate: false
 ---
