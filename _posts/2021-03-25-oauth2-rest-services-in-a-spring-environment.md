@@ -20,11 +20,11 @@ paginate: false
 ---
 ## 1. Introduction
 
-When it comes to adding authorization to call secured services, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
+When it comes to adding **authorization to call secured services**, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
 
 For this reason, the simplest thing when implementing an authorization layer through OAuth2 to call those services, would be to outsource the generation of the tokens to a new personalized client. This way we would have a maintainable integration, isolated from the REST client we are using.
 
-This article guides you through the creation of a simple library which allow you to grant your HTTP requests with the required authorization token, and integrate in your services whatever client you may use.
+This article guides you through the creation of a simple library which allow you to grant your HTTP requests with the required authorization token, and integrate in your services **whatever client you may use**.
 
 ![OAuth2 Schema](/assets/img/uploads/oauth-and-openid-connect-core-concepts1.png "OAuth2 Schema")
 
@@ -36,8 +36,6 @@ The authorization flow is described in the image above:
 4. Resource server check the token with the OAuth server, to confirm the client is authorized to consume that resource.
 5. Server responds with required protected resources.
 
-
-
 ## 2. Setting up the required dependencies
 
 We will need a few libraries to build our custom OAuth2 client.
@@ -46,7 +44,7 @@ First of all, the **Apache HTTP** client library, which will provide us with the
 
 In the second one, we find another Apache library, called ***cxf-rt-rs-security-oauth2***. In this case, this dependency would be optional, since we only need a set of predefined values in the OAuth2 Protocol definition, gathered in the `OAuthConstants` class. We could also defined those values by ourselves, to get rid of that dependency.
 
-Lastly, we include the json library. This library is a helpful toolset when we are handling JSON data. It is really useful to parse and manipulate JSON in Java.
+Lastly, we include the **json** library. This library is a helpful toolset when we are handling JSON data. It is really useful to parse and manipulate JSON in Java.
 
 ```xml
 <dependencies>
@@ -73,7 +71,7 @@ Lastly, we include the json library. This library is a helpful toolset when we a
 ## 3. Building the OAuth2 request
 
 We have to build the request to the server which will authorize our service as a granted client.
-To achieve this, we need to define the OAuth2 configuration we are using, including the grant type, the authorization server URL, the credentials for the given grant type, and the scope for the resource we are requesting.
+To achieve this, we need to define the OAuth2 configuration we are using, including the **grant type**, the authorization **server URL**, the **credentials** for the given grant type, and the **scope** for the resource we are requesting.
 
 ```java
 class OAuth2Config {
@@ -160,7 +158,7 @@ OAuth2Response execute(HttpUriRequest request) {
 
 We should not forget to close the `httpResponse`, to avoid the memory leakage. But is pretty important to wait until it is read properly, since it contains an InputStream which would become inaccessible once we have closed it.
 
-
+<br>
 
 Typically, the response content will come on a JSON format, with the access token data in a key-value schema. However, we should consider a server handling the data on a different format, like XML or URL encoded.
 
@@ -221,7 +219,7 @@ AccessToken accessToken() {
 
 But, how could we integrate this custom client in our service?
 
-Well, as I mentioned at the beginning of the article, the idea of this custom OAuth2 client is to be isolated from the framework and/or the HTTP client we are using to consume the secured services.
+Well, as I mentioned at the beginning of the article, the idea of this custom OAuth2 client is to be **isolated from the framework and/or the HTTP client** we are using to consume the secured services.
 
 So I will show you a few examples of how to integrate it in different service environments.
 
@@ -342,9 +340,7 @@ class ProtectedResourceHandler implements Handler<RoutingContext>  {
 }
 ```
 
-
-
-#### 6.4. Quarkus - RestEasy
+#### 6.4. Quarkus - RESTEasy
 
 ```java
 @RegisterRestClient
@@ -392,13 +388,10 @@ class SecurityHeaderFactory implements ClientHeadersFactory {
         .build();
   }
 }
-
 ```
-
-
 
 #### 7. Conclusion
 
-In this article, we have seen how we can set up a simple OAuth2 Client, and how we can integrate it in your REST calls to retrieve a secured resource from an external service.
+In this article, we have seen how we can set up a **simple OAuth2 Client**, and how we can integrate it in your REST calls to retrieve a secured resource from an external service.
 
-You can check the code used for the OAuth2 Client, the repository is available over on [Github](https://github.com/malkomich/oauth2-token-client).
+You can check the code used for the OAuth2 Client, the repository is available over on** [Github](https://github.com/malkomich/oauth2-token-client)**.
