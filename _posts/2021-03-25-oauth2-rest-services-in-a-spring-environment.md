@@ -18,6 +18,8 @@ tags:
 author: malkomich
 paginate: false
 ---
+<br>
+
 ## 1. Introduction
 
 When it comes to adding **authorization to call secured services**, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
@@ -33,8 +35,10 @@ The authorization flow is described in the image above:
 1. Authorization request is sent from client to OAuth server.
 2. Access token is returned to the client.
 3. Access token is then sent from client to the API service (acting as resource server) on each request for protected resource access.
-4. Resource server check the token with the OAuth server, to confirm the client is authorized to consume that resource.
+4. Resource server checks the token with the OAuth server, to confirm the client is authorized to consume that resource.
 5. Server responds with required protected resources.
+
+<br>
 
 ## 2. Setting up the required dependencies
 
@@ -67,6 +71,8 @@ Lastly, we include the **json** library. This library is a helpful toolset when 
     </dependency>
 </dependencies>
 ```
+
+<br>
 
 ## 3. Building the OAuth2 request
 
@@ -117,6 +123,8 @@ HttpUriRequest buildRequest() {
                        .build();
 }
 ```
+
+<br>
 
 ## 4. Executing the OAuth2 request
 
@@ -184,6 +192,8 @@ String extractEntityContent(HttpEntity entity) {
 
 Given the `JSONObject`, it becomes much easier to handle the response, since we can retrieve instantly each value we are interested in.
 
+<br>
+
 ## 5. Putting all together
 
 The goal here is to obtain an access token to call the secured services we need. However, sometimes we also need to know some additional data, like the timestamp when the token is going to expire, the token type we are receiving, or the refresh token in the case the grant type is defined so.
@@ -215,6 +225,8 @@ AccessToken accessToken() {
 }
 ```
 
+<br>
+
 ## 6. Put into practice
 
 But, how could we integrate this custom client in our service?
@@ -222,6 +234,8 @@ But, how could we integrate this custom client in our service?
 Well, as I mentioned at the beginning of the article, the idea of this custom OAuth2 client is to be **isolated from the framework and/or the HTTP client** we are using to consume the secured services.
 
 So I will show you a few examples of how to integrate it in different service environments.
+
+<br>
 
 #### 6.1. Spring Framework - WebClient
 
@@ -265,6 +279,8 @@ class WebClientConfig {
 }
 ```
 
+<br>
+
 #### 6.2. Spring Framework - Feign Client
 
 ```java
@@ -291,6 +307,8 @@ class FeignClientConfig {
   }
 }
 ```
+
+<br>
 
 #### 6.3. Vert.x - Web Client
 
@@ -339,6 +357,8 @@ class ProtectedResourceHandler implements Handler<RoutingContext>  {
   }
 }
 ```
+
+<br>
 
 #### 6.4. Quarkus - RESTEasy
 
@@ -389,6 +409,8 @@ class SecurityHeaderFactory implements ClientHeadersFactory {
   }
 }
 ```
+
+<br>
 
 #### 7. Conclusion
 
