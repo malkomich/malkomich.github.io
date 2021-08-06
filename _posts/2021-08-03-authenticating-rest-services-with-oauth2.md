@@ -416,4 +416,4 @@ class SecurityHeaderFactory implements ClientHeadersFactory {
 
 In this article, we have seen how we can set up a **simple OAuth2 Client**, and how we can integrate it in your REST calls to retrieve a secured resource from an external service.
 
-You can check the code used for the OAuth2 Client, the repository is available over on** [Github](https://github.com/malkomich/oauth2-token-client)**.
+You can check the code used for the OAuth2 Client, the repository is available over on **[Github](https://github.com/malkomich/oauth2-token-client)**.
