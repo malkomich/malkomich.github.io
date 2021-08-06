@@ -1,5 +1,5 @@
 ---
-date: 2021-08-06 15:16:26
+date: 2021-08-03 15:16:26
 layout: post
 title: Authenticating REST services with OAuth2
 description: REST services authenticated with an OAuth2 Client for Java
@@ -22,7 +22,7 @@ paginate: false
 
 ## 1. Introduction
 
-When it comes to adding **authorization to call services securely**, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
+When it comes to adding **authorization to call secured services**, we realize not only that the configuration changes depending on which framework you are going to use, but that for each HTTP client you use, you must configure OAuth2 in a different way.
 
 For this reason, the simplest thing when implementing an authorization layer through OAuth2 to call those services, would be to outsource the generation of the tokens to a new personalized client. This way we would have a maintainable integration, isolated from the REST client we are using.
 
