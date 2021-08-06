@@ -2,6 +2,7 @@
 date: 2021-08-03 15:16:26
 layout: post
 title: Authenticating REST services with OAuth2
+subtitle: REST services authenticated with an OAuth2 Client for Java
 description: REST services authenticated with an OAuth2 Client for Java
 image: /assets/img/uploads/image.jpg
 optimized_image: /assets/img/uploads/image.jpg
