@@ -21,3 +21,5 @@ I dream on a day when we can get any answer for the humanity problems, and impro
 I believe that someday, the usage of good software systems and AI solutions, empowered by scientific investigators, will lead us to significatively improve the humans life and reduce all kind of issues, giving us the opportunity to treat all of them from the beginning.
 
 In my second life...I love to travel, mainly to nature rich places. So I love the nature, losing myself around the mountains, and feeling nothing but the sound of the wind and the eagles flying over me. Big fan of Breaking Bad and war films. Beginner surfer & snowboarder. Married with an awesome and inspiring woman.
+
+*"When there is a storm the birds hide... but the eagles fly higher"*
