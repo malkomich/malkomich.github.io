@@ -5,8 +5,7 @@ let gulp         = require('gulp'),
     plumber      = require('gulp-plumber'),
     sourcemaps   = require('gulp-sourcemaps'),
     uglify       = require('gulp-uglify'),
-    browserSync  = require('browser-sync'),
-    spawn        = require('cross-spawn');
+    browserSync  = require('browser-sync');
 
 /**
  * Notify
@@ -40,8 +39,7 @@ function config() {
  */
 function jekyll(done) {
   notify('Building Jekyll...');
-  return spawn('jekyll', ['build'], {stdio: 'inherit'})
-    .once('close', done);
+  return require('child_process').exec('bundle exec jekyll build');
 }
 
 /**

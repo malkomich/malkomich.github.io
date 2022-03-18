@@ -52,6 +52,7 @@ plugins:
 exclude: [
   'package.json',
   'package-lock.json',
+  'yarn.lock',
   'src',
   'node_modules',
   'initpost.sh',
