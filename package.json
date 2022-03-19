@@ -3,10 +3,21 @@
   "version": "1.0.0",
   "description": "A tech blog from a tech guy",
   "main": "gulpfile.js",
+  "author": {
+    "name": "Juan Carlos Gonzalez",
+    "email": "malkomich@gmail.com"
+  },
   "homepage": "malkomich.github.io",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/malkomich/malkomich.github.io"
+  },
+  "bugs": {
+    "url": "https://github.com/malkomich/malkomich.github.io/issues"
+  },
+  "engines": {
+    "node": "12"
   },
   "scripts": {
     "preinstall": "bundle install",
@@ -14,7 +25,6 @@
     "dev": "gulp",
     "post": "./initpost.sh -c"
   },
-  "author": "Juan Carlos Gonzalez",
   "devDependencies": {
     "browser-sync": "^2.26.14",
     "gulp": "^4.0.2",
