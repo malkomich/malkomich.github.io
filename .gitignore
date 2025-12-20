@@ -12,7 +12,6 @@ _site/
 .jekyll-cache/
 .jekyll-metadata
 vendor
-Gemfile.lock
 
 ### Node ###
 node_modules/
