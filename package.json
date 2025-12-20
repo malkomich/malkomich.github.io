@@ -17,7 +17,7 @@
     "url": "https://github.com/malkomich/malkomich.github.io/issues"
   },
   "engines": {
-    "node": "12"
+    "node": "22"
   },
   "scripts": {
     "preinstall": "bundle install",
