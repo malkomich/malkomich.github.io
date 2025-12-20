@@ -33,8 +33,6 @@ This is far more complex than classic round-robin routing. As anyone running pro
 ## 1. Problem Context: Why Naive Load Balancing Fails in Production
 
 ![Comparison diagram showing naive round-robin load balancing vs. intelligent load balancing. Should illustrate: (1) Round-robin sending traffic equally to all pods regardless of state, with some pods marked as slow/unhealthy but still receiving traffic, resulting in cascading failures and high p95 latency; (2) Intelligent load balancing routing around degraded pods, respecting readiness gates, with traffic flowing only to healthy endpoints. Should include visual indicators of pod health states (green=healthy, yellow=warming up, red=unhealthy) and latency metrics.](https://www.mdpi.com/sustainability/sustainability-13-09587/article_deploy/html/images/sustainability-13-09587-g001.png)
-*Comparison diagram showing naive round-robin load balancing vs. intelligent load balancing. Should illustrate: (1) Round-robin sending traffic equally to all pods regardless of state, with some pods marked as slow/unhealthy but still receiving traffic, resulting in cascading failures and high p95 latency; (2) Intelligent load balancing routing around degraded pods, respecting readiness gates, with traffic flowing only to healthy endpoints. Should include visual indicators of pod health states (green=healthy, yellow=warming up, red=unhealthy) and latency metrics.*
-
 
 
 Picture your SaaS backend composed of User, Billing, and Notification microservices, each containerized with Python and running in GKE. Your API Gateway distributes traffic through Cloud Load Balancer to whichever pods are registered. Everything looks fine in staging. Then production happens.
@@ -56,7 +54,6 @@ The architecture also needs to play nicely with elastic scaling. As pods spin up
 ## 3. Designing the Cloud-Native Backend Architecture
 
 ![Complete system architecture diagram showing: GCP Cloud Load Balancer at entry point → Network Endpoint Groups (NEGs) → GKE cluster with multiple pods (billing-service, user-service, notification-service) across availability zones → Cloud SQL database and external APIs (Stripe, SendGrid). Should show health check flow from load balancer to pods, readiness/liveness probe endpoints, and the distinction between healthy, warming-up, and unhealthy pods with visual indicators.](https://docs.cloud.google.com/static/kubernetes-engine/images/gke-architecture.svg)
-*Complete system architecture diagram showing: GCP Cloud Load Balancer at entry point → Network Endpoint Groups (NEGs) → GKE cluster with multiple pods (billing-service, user-service, notification-service) across availability zones → Cloud SQL database and external APIs (Stripe, SendGrid). Should show health check flow from load balancer to pods, readiness/liveness probe endpoints, and the distinction between healthy, warming-up, and unhealthy pods with visual indicators.*
 
 
 
@@ -109,7 +106,6 @@ In real production code, your readiness check would verify actual dependencies. 
 ### 3.2 Containerization: Dockerfile Example
 
 ![Container lifecycle flow diagram showing: code → Docker build → image in Artifact Registry → pod deployment on GKE → startup sequence → health check failures during initialization → readiness transition → traffic routing begins. Should clearly show the timeline of initialization, the liveness/readiness probe checks at different stages, and when traffic begins flowing to the pod.](https://miro.medium.com/v2/resize:fit:1170/1*oqt8GlUYvm-OrO7gNBJjNQ.png)
-*Container lifecycle flow diagram showing: code → Docker build → image in Artifact Registry → pod deployment on GKE → startup sequence → health check failures during initialization → readiness transition → traffic routing begins. Should clearly show the timeline of initialization, the liveness/readiness probe checks at different stages, and when traffic begins flowing to the pod.*
 
 
 
@@ -242,7 +238,6 @@ In more sophisticated setups, I've extended this to use custom metrics—scaling
 ### 4.2 Fine-Grained Traffic Splitting for Safe Deployments
 
 ![Canary deployment traffic splitting visualization showing: stable deployment (3 pods v1) receiving 75% of traffic → canary deployment (1 pod v2) receiving 25% of traffic → gradual progression showing traffic percentage shift to canary (25% → 50% → 75% → 100%) → promotion to stable as health metrics improve. Should include monitoring panels showing error rates and latency metrics for each version, with clear decision points (scale up, rollback, promote).](https://miro.medium.com/v2/resize:fit:2000/1*WG0jvAOdkOfER60FygS6qQ.png)
-*Canary deployment traffic splitting visualization showing: stable deployment (3 pods v1) receiving 75% of traffic → canary deployment (1 pod v2) receiving 25% of traffic → gradual progression showing traffic percentage shift to canary (25% → 50% → 75% → 100%) → promotion to stable as health metrics improve. Should include monitoring panels showing error rates and latency metrics for each version, with clear decision points (scale up, rollback, promote).*
 
 
 
@@ -296,7 +291,6 @@ For even more sophisticated deployments, GCP's Traffic Director enables precise 
 ## 5. Observability: Monitoring Health, Latency, and Failures
 
 ![Observability feedback loop diagram showing: pods generating metrics (request latency, error rates, custom business metrics) → exported to Cloud Monitoring/Cloud Logging → metrics trigger alerts and autoscaling decisions → autoscaling controller creates/terminates pods → load balancer receives health signals from NEGs → routing decisions adjusted. Should show the circular feedback loop and the role of each component (Prometheus metrics, Cloud Trace, logs) in informing load balancing decisions.](https://kedify.io/_astro/driver-final.DYD-uSKd_1VQafC.webp)
-*Observability feedback loop diagram showing: pods generating metrics (request latency, error rates, custom business metrics) → exported to Cloud Monitoring/Cloud Logging → metrics trigger alerts and autoscaling decisions → autoscaling controller creates/terminates pods → load balancer receives health signals from NEGs → routing decisions adjusted. Should show the circular feedback loop and the role of each component (Prometheus metrics, Cloud Trace, logs) in informing load balancing decisions.*
 
 
 
