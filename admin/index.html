@@ -268,19 +268,30 @@
   <script>
     const DEFAULTS = {
       categories  : { field: 'slug',      valueSupplier: (slug) => slug },
-      pages       : { field: 'permalink', valueSupplier: (slug) => `/${slug}/` }
+      pages       : { field: 'permalink', valueSupplier: (slug) => `/${slug}/` },
+      posts       : { field: 'permalink', valueSupplier: (slug) => `/${slug}/` }
     }
 
     CMS.registerEventListener({
       name: 'preSave',
       handler: ({ entry }) => {
         const collection = entry.get('collection');
+        
+        const defaults = DEFAULTS[collection];
+        if (!defaults) {
+          return entry;
+        }
+        
         const slug = entry.get('slug')
           ? entry.get('slug')
-          : entry.getIn(['data', 'title'], '').toLowerCase().replace(/[']/g, '').replace(/[.]/g, '-').replace(/[\s]/g, '-');
+          : entry.getIn(['data', 'title'], '')
+              .toLowerCase()
+              .replace(/[']/g, '')
+              .replace(/[.]/g, '-')
+              .replace(/[\s]/g, '-');
 
         return entry.get('data')
-                    .set(DEFAULTS[collection].field, DEFAULTS[collection].valueSupplier(slug))
+                    .set(defaults.field, defaults.valueSupplier(slug))
       },
     });
   </script>
