@@ -30,7 +30,7 @@ This is far more complex than classic round-robin routing. As anyone running pro
 
 ## 1. Problem Context: Why Naive Load Balancing Fails in Production
 
-![Comparison diagram showing naive round-robin load balancing vs. intelligent load balancing. Should illustrate: (1) Round-robin sending traffic equally to all pods regardless of state, with some pods marked as slow/unhealthy but still receiving traffic, resulting in cascading failures and high P95 latency; (2) Intelligent load balancing routing around degraded pods, respecting readiness gates, with traffic flowing only to healthy endpoints. Should include visual indicators of pod health states (green=healthy, yellow=warming up, red=unhealthy) and latency metrics.](https://www.mdpi.com/sustainability/sustainability-13-09587/article_deploy/html/images/sustainability-13-09587-g001.png)
+![Requests without Load Balancer Meme](https://miro.medium.com/v2/resize:fit:1006/1*jQODaAwmCgEOc8y7xXbWkg.jpeg)
 
 
 Picture your SaaS backend composed of User, Billing, and Notification microservices, each containerized with Python and running in GKE. Your API Gateway distributes traffic through Cloud Load Balancer to whichever pods are registered. Everything looks fine in staging. Then production happens.
