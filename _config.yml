@@ -14,7 +14,7 @@ menu:
     url: /about
   - title: Contact
     url: /contact
-disqus_identifier: malkomich-github-io
+disqus_identifier: malkomich
 blog_url: /blog
 show_hero: true
 email: malkomich@gmail.com
@@ -27,6 +27,8 @@ twitter_username: malkomich
 instagram_username: malkomich
 linkedin_username: juancarlos-gonzalez-cabrero
 medium_username: malkomich
+devto_username: malkomich
+hashnode_username: malkomich
 
 
 # Posts Settings

@@ -51,6 +51,12 @@ layout: page
 {% if page.linkedin_username %}
     {% assign author_urls = author_urls | append: '"https://www.linkedin.com/in/' | append: page.linkedin_username | append: '",' %}
 {% endif %}
+{% if page.devto_username %}
+    {% assign author_urls = author_urls | append: '"https://dev.to/' | append: page.devto_username | append: '",' %}
+{% endif %}
+{% if page.hashnode_username %}
+    {% assign author_urls = author_urls | append: '"https://hashnode.com/@' | append: page.hashnode_username | append: '",' %}
+{% endif %}
 
 <script type="application/ld+json">
 {

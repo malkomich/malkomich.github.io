@@ -40,6 +40,16 @@
             <svg><use xlink:href="#icon-linkedin"></use></svg>
           </a>
         {% endif %}
+        {% if author.devto_username %}
+          <a href="https://dev.to/{{ author_devto_username }}" title="Dev.to">
+            <svg><use xlink:href="#icon-devto"></use></svg>
+          </a>
+        {% endif %}
+        {% if author.hashnode_username %}
+          <a href="https://hashnode.com/@{{ author_hashnode_username }}" title="Hashnode">
+            <svg><use xlink:href="#icon-hashnode"></use></svg>
+          </a>
+        {% endif %}
       </p>
     </div>
   </section>
@@ -59,6 +69,12 @@
   {% endif %}
   {% if author.linkedin_username %}
       {% assign author_urls = author_urls | append: '"https://www.linkedin.com/in/' | append: author.linkedin_username | append: '",' %}
+  {% endif %}
+  {% if author.devto_username %}
+      {% assign author_urls = author_urls | append: '"https://dev.to/' | append: author_devto_username | append: '",' %}
+  {% endif %}
+  {% if author.hashnode_username %}
+      {% assign author_urls = author_urls | append: '"https://hashnode.com/@' | append: author_hashnode_username | append: '",' %}
   {% endif %}
 
   <script type="application/ld+json">

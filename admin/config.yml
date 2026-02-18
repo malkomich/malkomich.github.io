@@ -2,7 +2,7 @@ backend:
   name: github
   repo: malkomich/malkomich.github.io
   branch: master
-  site_domain: malkomich.netlify.com
+  site_domain: malkomich.netlify.app
 publish_mode: editorial_workflow
 media_folder: "assets/img/uploads"
 collections:
@@ -35,7 +35,7 @@ collections:
     folder: "_posts"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    preview_path: "{{title}}"
+    preview_path: "{{slug}}"
     extension: "md"
     fields:
       - label: "Publish Date"
@@ -181,6 +181,14 @@ collections:
         name: "medium_username"
         widget: "string"
         required: false
+      - label: "Dev.to Username"
+        name: "devto_username"
+        widget: "string"
+        required: false
+      - label: "Hashnode Username"
+        name: "hashnode_username"
+        widget: "string"
+        required: false
       - label: "Back Photo"
         name: "photo_back"
         widget: "image"
@@ -265,6 +273,14 @@ collections:
             required: false
           - label: "Medium Username"
             name: "medium_username"
+            widget: "string"
+            required: false
+          - label: "Dev.to Username"
+            name: "devto_username"
+            widget: "string"
+            required: false
+          - label: "Hashnode Username"
+            name: "hashnode_username"
             widget: "string"
             required: false
       - label: "Posts"
@@ -485,5 +501,4 @@ collections:
             name: "sent_message_url"
             hint: "URL where the user will be redirected for after submit the contact form. Ex: /contact/message-sent/"
             required: false
-
 

@@ -39,4 +39,20 @@
         </a>
     </li>
     {% endif %}
+    {% if site.devto_username %}
+    <li>
+        <a href="https://dev.to/{{ site.devto_username }}" title="Dev.to">
+            <svg><use xlink:href="#icon-devto"></use></svg>
+            <span class="label">Dev.to</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if site.hashnode_username %}
+    <li>
+        <a href="https://hashnode.com/@{{ site.hashnode_username }}" title="Hashnode">
+            <svg><use xlink:href="#icon-hashnode"></use></svg>
+            <span class="label">Hashnode</span>
+        </a>
+    </li>
+    {% endif %}
 </ul>
