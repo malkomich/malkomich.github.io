@@ -35,6 +35,18 @@ layout: particles
         </a>
         {% endif %}
 
+        {% if site.devto_username %}
+        <a href="https://dev.to/{{ site.devto_username }}" title="Dev.to">
+            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-devto"></use></svg>
+        </a>
+        {% endif %}
+
+        {% if site.hashnode_username %}
+        <a href="https://hashnode.com/@{{ site.hashnode_username }}" title="Hashnode">
+            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-hashnode"></use></svg>
+        </a>
+        {% endif %}
+
         {% if site.github_username %}
             <a href="https://github.com/{{ site.github_username }}" title="Github">
                 <i class="icon fa fa-github-alt" aria-hidden="true"></i>

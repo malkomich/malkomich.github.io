@@ -117,6 +117,12 @@ layout: main
 {% if site.linkedin_username %}
     {% assign social_urls = social_urls | append: '"https://www.linkedin.com/in/' | append: site.linkedin_username | append: '",' %}
 {% endif %}
+{% if site.devto_username %}
+    {% assign social_urls = social_urls | append: '"https://dev.to/' | append: site.devto_username | append: '",' %}
+{% endif %}
+{% if site.hashnode_username %}
+    {% assign social_urls = social_urls | append: '"https://hashnode.com/@' | append: site.hashnode_username | append: '",' %}
+{% endif %}
 
 <script type="application/ld+json">
 {

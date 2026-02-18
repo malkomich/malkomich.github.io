@@ -22,6 +22,12 @@
 {% if site.linkedin_username %}
     {% assign social_urls = social_urls | append: '"https://www.linkedin.com/in/' | append: site.linkedin_username | append: '",' %}
 {% endif %}
+{% if author.devto_username %}
+    {% assign author_urls = author_urls | append: '"https://dev.to/' | append: author_devto_username | append: '",' %}
+{% endif %}
+{% if author.hashnode_username %}
+    {% assign author_urls = author_urls | append: '"https://hashnode.com/@' | append: author_hashnode_username | append: '",' %}
+{% endif %}
 
 <script type="application/ld+json">
 {
