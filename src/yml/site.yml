@@ -1,19 +1,165 @@
-name: malkomich
-title: Malkomich Tech Blog
-description: All boils down to code
-tags:
-  - software
-  - developer
-  - github
-  - java
-menu:
-  - title: Blog
-    url: /blog
-  - title: About
-    url: /about
-  - title: Contact
-    url: /contact
-disqus_identifier: malkomich
-blog_url: /blog
-show_hero: true
-email: malkomich@gmail.com
+partial: false
+path: src/yml/site.yml
+meta:
+  path: src/yml/site.yml
+isModification: null
+raw: |
+  name: malkomich
+  title: Malkomich Tech Blog
+  description: All boils down to code
+  tags:
+    - software
+    - developer
+    - github
+    - java
+  menu:
+    - title: Blog
+      url: /blog
+    - title: About
+      url: /about
+    - title: Contact
+      url: /contact
+  disqus_identifier: malkomich
+  blog_url: /blog
+  show_hero: true
+  email: malkomich@gmail.com
+data:
+  disqus_identifier: malkomich
+  name: malkomich
+  blog_url: /blog
+  title: Malkomich Tech Blog
+  tags:
+    - software
+    - developer
+    - backend
+    - java
+    - docker
+    - git
+    - engineering
+    - programming
+    - ai
+    - software_engineering
+    - software_architecture
+    - spring
+    - python
+    - javascript
+    - REST
+    - API
+    - microservices
+    - cloud_computing
+    - GCP
+    - CI
+    - automation
+    - SQL
+    - MongoDB
+    - development
+  email: malkomich@gmail.com
+  description: All boils down to code
+  show_hero: true
+  menu:
+    - title: Blog
+      url: /blog
+    - title: About
+      url: /about
+    - title: Contact
+      url: /contact
+author: ""
+slug: site
+newRecord: false
+status: ""
+mediaFiles:
+  - id: 5caed2805cc7ff0a7be3e650ffd3d098bebf2f40
+    name: 240_f_305402093_xjwbp9xafrelg7vd6eoaoe8bcyrloqal.jpg
+    size: 50975
+    displayURL:
+      id: 5caed2805cc7ff0a7be3e650ffd3d098bebf2f40
+      path: assets/img/uploads/240_f_305402093_xjwbp9xafrelg7vd6eoaoe8bcyrloqal.jpg
+    path: assets/img/uploads/240_f_305402093_xjwbp9xafrelg7vd6eoaoe8bcyrloqal.jpg
+  - id: 33d01836f8dd734f5b383ecb99dff8dc0c2ad641
+    name: 8ed679b2-e4aa-4f6e-b612-648cdcf2e977.png
+    size: 3685015
+    displayURL:
+      id: 33d01836f8dd734f5b383ecb99dff8dc0c2ad641
+      path: assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977.png
+    path: assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977.png
+  - id: 847854673dcafd635e4aa2ec580b3acd9bfc2a7b
+    name: chatgpt-image-jan-21-2026-09_46_13-pm.png
+    size: 3061016
+    displayURL:
+      id: 847854673dcafd635e4aa2ec580b3acd9bfc2a7b
+      path: assets/img/uploads/chatgpt-image-jan-21-2026-09_46_13-pm.png
+    path: assets/img/uploads/chatgpt-image-jan-21-2026-09_46_13-pm.png
+  - id: 50e80be6130d0fe07183a69a3751cf3d8a7dbfb4
+    name: dnsdynamic2025_10.jpeg
+    size: 126184
+    displayURL:
+      id: 50e80be6130d0fe07183a69a3751cf3d8a7dbfb4
+      path: assets/img/uploads/dnsdynamic2025_10.jpeg
+    path: assets/img/uploads/dnsdynamic2025_10.jpeg
+  - id: e18162cf9746dc0db5960e7aa88288c10cd2bf6e
+    name: getting-started-with-raspberry-pi.png
+    size: 107642
+    displayURL:
+      id: e18162cf9746dc0db5960e7aa88288c10cd2bf6e
+      path: assets/img/uploads/getting-started-with-raspberry-pi.png
+    path: assets/img/uploads/getting-started-with-raspberry-pi.png
+  - id: a2ebba10129c2da5313f8202ad6d66ea967aaf51
+    name: google-cloud-platform-thumbnail-100-1200x780.jpg
+    size: 53330
+    displayURL:
+      id: a2ebba10129c2da5313f8202ad6d66ea967aaf51
+      path: assets/img/uploads/google-cloud-platform-thumbnail-100-1200x780.jpg
+    path: assets/img/uploads/google-cloud-platform-thumbnail-100-1200x780.jpg
+  - id: f4d5222d25f085d3879dcc3c7543401fb011b289
+    name: image.jpg
+    size: 214271
+    displayURL:
+      id: f4d5222d25f085d3879dcc3c7543401fb011b289
+      path: assets/img/uploads/image.jpg
+    path: assets/img/uploads/image.jpg
+  - id: 3bd4d063e0e8b6ae7922ac3a728c0e3bb441b85d
+    name: img_20170628_075923.jpg
+    size: 56060
+    displayURL:
+      id: 3bd4d063e0e8b6ae7922ac3a728c0e3bb441b85d
+      path: assets/img/uploads/img_20170628_075923.jpg
+    path: assets/img/uploads/img_20170628_075923.jpg
+  - id: 1a86bc4a4bb2ada2b26cb26ab4fe70d1b872389e
+    name: oauth-and-openid-connect-core-concepts1.png
+    size: 17178
+    displayURL:
+      id: 1a86bc4a4bb2ada2b26cb26ab4fe70d1b872389e
+      path: assets/img/uploads/oauth-and-openid-connect-core-concepts1.png
+    path: assets/img/uploads/oauth-and-openid-connect-core-concepts1.png
+  - id: 0b89de5d623ba9f74b163620ef61acb477e7cde0
+    name: profile.png
+    size: 1027
+    displayURL:
+      id: 0b89de5d623ba9f74b163620ef61acb477e7cde0
+      path: assets/img/uploads/profile.png
+    path: assets/img/uploads/profile.png
+  - id: 709157dcbbf68cfd03f4526df4fbbf675621dd5c
+    name: rclone-file-automation.jpg
+    size: 86210
+    displayURL:
+      id: 709157dcbbf68cfd03f4526df4fbbf675621dd5c
+      path: assets/img/uploads/rclone-file-automation.jpg
+    path: assets/img/uploads/rclone-file-automation.jpg
+  - id: a8878570c56d977503620f93467f6dd4d519d68c
+    name: reverse-proxy-network-diagram_hu27d8091b03003ade4006a9fa74f29185_60658_812x451_resize_q90_h2_lanczos_3.webp
+    size: 25808
+    displayURL:
+      id: a8878570c56d977503620f93467f6dd4d519d68c
+      path: assets/img/uploads/reverse-proxy-network-diagram_hu27d8091b03003ade4006a9fa74f29185_60658_812x451_resize_q90_h2_lanczos_3.webp
+    path: assets/img/uploads/reverse-proxy-network-diagram_hu27d8091b03003ade4006a9fa74f29185_60658_812x451_resize_q90_h2_lanczos_3.webp
+  - id: fa1e0a561e511ac13d57946e1381f39721e5e570
+    name: system-architecture_en.webp
+    size: 28168
+    displayURL:
+      id: fa1e0a561e511ac13d57946e1381f39721e5e570
+      path: assets/img/uploads/system-architecture_en.webp
+    path: assets/img/uploads/system-architecture_en.webp
+label: Site
+updatedOn: ""
+i18n: {}
+collection: settings
