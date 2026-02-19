@@ -7,8 +7,8 @@ subtitle: A production-ready home automation server with Docker, PostgreSQL, SSL
 description: A full guide on running n8n on Raspberry Pi with Docker, HTTPS,
   DDNS, PostgreSQL, reverse proxy, and automated backups. Production-ready,
   secure, and resilient.
-image: /assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977_cropped_processed_by_imagy.png
-optimized_image: /assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977.png
+image: /assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977.png
+optimized_image: /assets/img/uploads/8ed679b2-e4aa-4f6e-b612-648cdcf2e977_cropped_processed_by_imagy-1-.png
 author: malkomich
 permalink: /2026-02-18-self-hosting-n8n-on-raspberry-pi-https-ddns-automated-backups/
 category: automation
