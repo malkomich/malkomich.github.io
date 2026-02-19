@@ -22,8 +22,8 @@
     * **title**: The post title.
     * **subtitle**: A subtitle to appear below the title.
     * **description**: Used in the home and category pages, in meta description tag for SEO purposes and for social media sharing.
-    * **image**: Used in the home and category pages and for social media sharing.
-    * **optimized_image** _(Optional)_: Smaller image to appear in the home and category pages, for faster load.
+    * **image**: Featured image shown in post reading view.
+    * **optimized_image** _(Optional, Recommended)_: Social preview image (LinkedIn/Open Graph) and card image for home/category pages. Recommended size: `1200x627` (ratio `1.91:1`).
     * **category**: One category defined in `category/<category>.md`.
     * **tags**: Post keywords. Used in the home, category and tags pages, and as meta keywords for SEO purposes.
     * **author**: One author defined in `_authors/<author>.md`.

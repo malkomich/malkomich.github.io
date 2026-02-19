@@ -62,12 +62,12 @@ collections:
         widget: "image"
         allow_multiple: false
         required: false
-      - label: "Optimized Image"
+      - label: "Social Preview Image"
         name: "optimized_image"
         widget: "image"
         allow_multiple: false
         required: false
-        hint: "You can set an optimized image version to show on the home page"
+        hint: "Recommended: 1200x627 (1.91:1). Used for LinkedIn/Open Graph preview and home/category cards."
       - label: "Category"
         name: "category"
         widget: "relation"
@@ -483,7 +483,12 @@ collections:
             name: "url"
             widget: "string"
             required: false
-            hint: "The base hostname and protocol for your site"
+            hint: "The base hostname and protocol for your site. Keep empty for local/review environments if needed."
+          - label: "Default Social Preview Image"
+            name: "default_social_image"
+            widget: "string"
+            required: false
+            hint: "Fallback image for social previews when a post has no Social Preview Image. Recommended 1200x627."
           - label: "Google Analytics ID"
             name: "google_analytics"
             widget: "string"
@@ -501,4 +506,3 @@ collections:
             name: "sent_message_url"
             hint: "URL where the user will be redirected for after submit the contact form. Ex: /contact/message-sent/"
             required: false
-
