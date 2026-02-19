@@ -54,6 +54,7 @@ N8N_PORT=5678
 Important: in `.env`, `PUBLIC_DOMAIN=<YOUR_DOMAIN>` must be the public domain you want to publish your n8n server, for example `n8n.example.com`.
 
 The first thing I do after creating this `.env` file is lock down its permissions. Only the user running Docker should be able to read it. This prevents other users on the system (or compromised services) from accessing the secrets. You could use Docker secrets, or even HashiCorp Vault, but for a small setup, strict file permissions and regular password rotation are already a strong baseline:
+
 ```bash
 chmod 600 .env
 ```
@@ -171,10 +172,12 @@ What I particularly appreciate about this architecture is that all **TLS termina
 ![Timeline/sequence diagram showing: ISP changes home IP → DDNS script detects change → DNS record change → Cloudflare propagates → external services resolve to new IP. Should include the 15-minute check interval and TTL expiration windows.](assets/img/uploads/dnsdynamic2025_10.jpeg)
 
 Domain and DDNS flow:
+
 1. Register domain at your registrar.
 2. Delegate nameservers to Cloudflare.
 3. Create DNS record for your n8n host if needed.
-    > In my case I created an `A` record for a subdomain I reserved for my n8n instance, and that record is the one my DDNS process updates automatically.
+
+   > In my case I created an `A` record for a subdomain I reserved for my n8n instance, and that record is the one my DDNS process updates automatically.
 4. Keep DNS updated with [`ddns-updater`](https://github.com/qdm12/ddns-updater).
 
 Install DDNS updater:
@@ -387,7 +390,7 @@ sudo ss -tulpen | grep -E '(:80|:81|:443|:5678|:8080)\\b'
 
 Public exposure should be limited to 80/443 through your router rules.
 
-![n8n login page after successful setup](<ADD_YOUR_N8N_LOGIN_SCREENSHOT_PATH_HERE>)
+![n8n login page after successful setup](/assets/img/uploads/captura-de-pantalla-2026-02-19-a-las-2.34.02.png)
 
 If everything is configured correctly, opening `https://<YOUR_DOMAIN>` should display the n8n login page. This is the expected result after completing the setup and routing public traffic from your domain to the Raspberry Pi server.
 
