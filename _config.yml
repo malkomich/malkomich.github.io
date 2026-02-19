@@ -5,8 +5,21 @@ description: All boils down to code
 tags:
   - software
   - developer
-  - github
+  - backend
+  - git
   - java
+  - software_architecture
+  - CI
+  - automation
+  - AI
+  - python
+  - spring
+  - devops
+  - microservices
+  - REST
+  - API
+  - docker
+  - javascript
 menu:
   - title: Blog
     url: /blog
@@ -14,7 +27,7 @@ menu:
     url: /about
   - title: Contact
     url: /contact
-disqus_identifier: malkomich
+disqus_identifier: malkomich-github-io
 blog_url: /blog
 show_hero: true
 email: malkomich@gmail.com
@@ -41,6 +54,7 @@ two_columns_layout: true
 # Advanced Settings
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
+default_social_image: "/assets/img/malkomich_blog.png" # fallback for Open Graph/Twitter previews
 google_analytics: "UA-81308514-3"
 language: "en"
 categories_folder: category

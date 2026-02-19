@@ -1,15 +1,142 @@
 <section class="share">
+    {% assign post_path = page.url | prepend: site.baseurl %}
     <h3>{{ site.translations.text.share | default: "Share" }}</h3>
     <a aria-label="{{ site.translations.button.share_on_twitter | default: 'Share on Twitter' }}"
-       href="https://twitter.com/intent/tweet?text=&quot;{{ page.description }}&quot;%20{{ site.url }}{{ page.url }}%20via%20&#64;{{ site.twitter_username }}&hashtags={% for tag in page.tags %}{{tag}},{% endfor %}"
-       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"
+       href="{{ post_path }}"
+       onclick="return openSharePost('twitter');"
        title="{{ site.translations.button.share_on_twitter | default: 'Share on Twitter' }}">
         <svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>
     </a>
     <a aria-label="{{ site.translations.button.share_on_facebook | default: 'Share on Facebook' }}"
-       href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}"
-       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+       href="{{ post_path }}"
+       onclick="return openSharePost('facebook');"
        title="{{ site.translations.button.share_on_facebook | default: 'Share on Facebook' }}">
         <svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>
     </a>
+    <a aria-label="{{ site.translations.button.share_on_linkedin | default: 'Share on LinkedIn' }}"
+       href="{{ post_path }}"
+       onclick="return openSharePost('linkedin');"
+       title="{{ site.translations.button.share_on_linkedin | default: 'Share on LinkedIn' }}">
+        <svg class="icon icon-linkedin"><use xlink:href="#icon-linkedin"></use></svg>
+    </a>
 </section>
+
+<script type="text/javascript">
+    (function () {
+        var postPath = {{ post_path | jsonify }};
+        var title = {{ page.title | default: site.title | jsonify }};
+        var description = {{ page.description | default: page.title | default: site.title | jsonify }};
+        var twitterUser = {{ site.twitter_username | default: "" | jsonify }};
+        var tags = {{ page.tags | join: "," | default: "" | jsonify }};
+
+        function getPostUrl() {
+            var canonicalElement = document.querySelector("link[rel='canonical']");
+            if (canonicalElement && canonicalElement.href) {
+                try {
+                    var canonicalUrl = new URL(canonicalElement.href, window.location.origin);
+                    return canonicalUrl.origin + canonicalUrl.pathname;
+                } catch (canonicalError) {
+                    // ignore canonical parsing failures and fallback below
+                }
+            }
+
+            try {
+                var currentUrl = new URL(window.location.href);
+                return currentUrl.origin + currentUrl.pathname;
+            } catch (e) {
+                try {
+                    return new URL(postPath, window.location.origin).href;
+                } catch (error) {
+                    return window.location.href;
+                }
+            }
+        }
+
+        function popup(url, name, width, height) {
+            var popupWindow = window.open(url, name, "width=" + width + ",height=" + height);
+            if (!popupWindow) {
+                window.location.href = url;
+                return false;
+            }
+
+            popupWindow.focus();
+            return false;
+        }
+
+        function sanitizeText(text) {
+            if (!text) {
+                return "";
+            }
+
+            return text
+                .replace(/\s+/g, " ")
+                .replace(/\u0000/g, "")
+                .trim();
+        }
+
+        function normalizedHashtags(rawTags) {
+            return rawTags
+                .split(",")
+                .map(function (tag) { return tag.trim().replace(/\s+/g, ""); })
+                .filter(function (tag) { return tag.length > 0; })
+                .join(",");
+        }
+
+        function buildShareMessage(postUrl) {
+            var titleText = sanitizeText(title);
+            var descriptionText = sanitizeText(description);
+            var hashtagText = normalizedHashtags(tags)
+                .split(",")
+                .filter(function (tag) { return tag.length > 0; })
+                .map(function (tag) { return "#" + tag; })
+                .join(" ");
+
+            return [
+                titleText,
+                descriptionText,
+                "Read the full article:",
+                postUrl,
+                hashtagText
+            ]
+                .filter(function (line) { return line && line.trim().length > 0; })
+                .join("\n\n");
+        }
+
+        window.openSharePost = function (platform) {
+            var postUrl = getPostUrl();
+            var shareUrl = "";
+            var message = buildShareMessage(postUrl);
+            var params = new URLSearchParams();
+
+            if (platform === "twitter") {
+                var text = message;
+                if (twitterUser) {
+                    text += " via @" + twitterUser;
+                }
+
+                params.set("text", text);
+                var hashtags = normalizedHashtags(tags);
+                if (hashtags) {
+                    params.set("hashtags", hashtags);
+                }
+
+                shareUrl = "https://twitter.com/intent/tweet?" + params.toString();
+                return popup(shareUrl, "twitter-share", 550, 235);
+            }
+
+            if (platform === "facebook") {
+                params.set("u", postUrl);
+                shareUrl = "https://www.facebook.com/sharer/sharer.php?" + params.toString();
+                return popup(shareUrl, "facebook-share", 580, 296);
+            }
+
+            if (platform === "linkedin") {
+                params.set("url", postUrl);
+                shareUrl = "https://www.linkedin.com/sharing/share-offsite/?" + params.toString();
+                return popup(shareUrl, "linkedin-share", 600, 600);
+            }
+
+            return false;
+        };
+    })();
+</script>

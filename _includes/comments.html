@@ -6,28 +6,55 @@
 </section>
 
 <script type="text/javascript">
-    var disqus_loaded = false;
+    var disqus_config = function () {
+        var canonicalPath = {{ page.url | replace:'index.html','' | prepend: site.baseurl | jsonify }};
+        var canonicalLink = document.querySelector("link[rel='canonical']");
+        var pageUrl = "";
 
-    function load_disqus() {
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = 'https://{{ site.disqus_identifier }}.disqus.com/embed.js';
-        dsq.setAttribute('data-timestamp', + new Date());
-
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-
-        disqus_loaded = true;
-    };
-
-    window.onscroll = function(e) {
-        if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 800)) {
-            //hit bottom of page
-            if (!disqus_loaded) {
-                load_disqus();
+        if (canonicalLink && canonicalLink.href) {
+            pageUrl = canonicalLink.href;
+        } else {
+            try {
+                pageUrl = new URL(canonicalPath, window.location.origin).href;
+            } catch (error) {
+                pageUrl = window.location.href;
             }
         }
+
+        try {
+            var normalizedUrl = new URL(pageUrl);
+            normalizedUrl.search = "";
+            normalizedUrl.hash = "";
+            pageUrl = normalizedUrl.href;
+        } catch (error) {
+            // keep original pageUrl when URL normalization fails
+        }
+
+        this.page.url = pageUrl;
+        this.page.identifier = {{ page.id | default: page.url | jsonify }};
+        this.page.title = {{ page.title | default: site.title | jsonify }};
     };
+
+    (function () {
+        var disqusShortname = {{ site.disqus_identifier | default: "" | jsonify }};
+        var normalizedShortname = String(disqusShortname || "")
+            .trim()
+            .toLowerCase()
+            .replace(/^https?:\/\//i, "")
+            .replace(/\.disqus\.com\/?$/i, "")
+            .replace(/\/.*$/, "");
+
+        if (!/^[a-z0-9-]+$/.test(normalizedShortname)) {
+            console.error("Disqus shortname is missing or invalid:", normalizedShortname);
+            return;
+        }
+
+        var d = document;
+        var s = d.createElement("script");
+        s.src = "https://" + normalizedShortname + ".disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
