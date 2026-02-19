@@ -157,7 +157,7 @@ If `n8n` is restarting in loop, the first thing to verify is `.env` consistency,
 
 ## 3. Exposing n8n Securely with Nginx Proxy Manager
 
-![Network flow diagram showing: external traffic on port 80/443 → Nginx Proxy Manager (TLS termination) → internal n8n service on port 5678 over plain HTTP. Should illustrate the reverse proxy pattern and where SSL/TLS encryption happens.](assets/img/uploads/reverse-proxy-network-diagram_hu27d8091b03003ade4006a9fa74f29185_60658_812x451_resize_q90_h2_lanczos_3.webp)
+![Network flow diagram showing: external traffic on port 80/443 → Nginx Proxy Manager (TLS termination) → internal n8n service on port 5678 over plain HTTP. Should illustrate the reverse proxy pattern and where SSL/TLS encryption happens.](/assets/img/uploads/reverse-proxy-network-diagram_hu27d8091b03003ade4006a9fa74f29185_60658_812x451_resize_q90_h2_lanczos_3.webp)
 
 Running n8n directly on port 5678 with HTTP is fine for localhost testing, but completely unacceptable for production use. You need HTTPS for security, you need proper hostname routing, and you need automatic certificate renewal. I used to configure all of this manually with raw nginx configs and certbot, but Nginx Proxy Manager (NPM) has simplified my life considerably.
 
@@ -169,7 +169,7 @@ What I particularly appreciate about this architecture is that all **TLS termina
 
 ## 4. Domain config with Dynamic DNS (DDNS) and Router Setup
 
-![Timeline/sequence diagram showing: ISP changes home IP → DDNS script detects change → DNS record change → Cloudflare propagates → external services resolve to new IP. Should include the 15-minute check interval and TTL expiration windows.](assets/img/uploads/dnsdynamic2025_10.jpeg)
+![Timeline/sequence diagram showing: ISP changes home IP → DDNS script detects change → DNS record change → Cloudflare propagates → external services resolve to new IP. Should include the 15-minute check interval and TTL expiration windows.](/assets/img/uploads/dnsdynamic2025_10.jpeg)
 
 Domain and DDNS flow:
 
@@ -260,7 +260,7 @@ Expected result, `dig` returns your public IP (or Cloudflare edge IPs if proxied
 
 ## 5. Automated Backups with rclone
 
-![rclone automation flow, pushing backups to Google Drive.](assets/img/uploads/rclone-file-automation.jpg)
+![rclone automation flow, pushing backups to Google Drive.](/assets/img/uploads/rclone-file-automation.jpg)
 
 Backups include both PostgreSQL data and n8n runtime data (`data/n8n`). **rclone** is reliable for unattended uploads, supports retries, and keeps the process lightweight on Raspberry Pi.
 
