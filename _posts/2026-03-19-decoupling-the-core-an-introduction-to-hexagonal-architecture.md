@@ -10,7 +10,7 @@ description: A practical guide to designing Spring Boot applications with
 image: /assets/img/uploads/chatgpt-image-mar-19-2026-11_28_40-am.png
 optimized_image: /assets/img/uploads/chatgpt-image-mar-19-2026-11_28_40-am.png
 author: malkomich
-permalink: /decoupling-the-core:-an-introduction-to-hexagonal-architecture/
+permalink: /2026-03-19-decoupling-the-core-an-introduction-to-hexagonal-architecture/
 category: software-arquitecture
 tags:
   - architecture
@@ -34,19 +34,19 @@ Traditional layered systems are not wrong. They are just easier to get wrong as 
 
 The usual failure mode is predictable:
 
-- controllers start orchestrating use cases
-- services become transaction scripts with framework knowledge
-- repositories stop being persistence abstractions and begin to carry business decisions
-- domain objects degrade into DTOs
+* controllers start orchestrating use cases
+* services become transaction scripts with framework knowledge
+* repositories stop being persistence abstractions and begin to carry business decisions
+* domain objects degrade into DTOs
 
 The real problem is not the number of layers. The real problem is dependency direction. Once domain logic depends on JPA entities, Spring annotations, HTTP DTOs, or provider payloads, changing any outer concern becomes more expensive than it should be.
 
 That cost shows up in very practical ways:
 
-- tests become slow because business rules need full application context
-- switching storage technology becomes invasive
-- adding a second delivery mechanism, such as messaging or scheduling, duplicates orchestration logic
-- external integration concerns leak into the core model
+* tests become slow because business rules need full application context
+* switching storage technology becomes invasive
+* adding a second delivery mechanism, such as messaging or scheduling, duplicates orchestration logic
+* external integration concerns leak into the core model
 
 Hexagonal Architecture is a response to that coupling problem.
 
@@ -58,10 +58,10 @@ The pattern is simpler than the terminology sometimes suggests.
 
 A hexagonal application has:
 
-- a core with domain and use cases
-- inbound ports, which define what the application can do
-- outbound ports, which define what the application needs
-- adapters, which connect those ports to HTTP, databases, queues, schedulers, external APIs, and any other technical detail
+* a core with domain and use cases
+* inbound ports, which define what the application can do
+* outbound ports, which define what the application needs
+* adapters, which connect those ports to HTTP, databases, queues, schedulers, external APIs, and any other technical detail
 
 The point is not to create more interfaces for the sake of it. The point is to isolate the places where change is likely and costly.
 
@@ -114,10 +114,10 @@ In practice, the combination is useful because a clean architecture without a me
 
 You do not need the full DDD catalogue to get value. A few tactical choices are enough:
 
-- name domain concepts in business language
-- model small value objects when identity or meaning matters
-- keep invariants close to the model
-- represent domain errors explicitly
+* name domain concepts in business language
+* model small value objects when identity or meaning matters
+* keep invariants close to the model
+* represent domain errors explicitly
 
 For example, if a slot coming from a partner catalog is identified by two related ids, that pair deserves its own type:
 
@@ -181,7 +181,6 @@ The useful test is simple: does this abstraction make the business model clearer
 ## A Spring Boot structure that stays readable
 
 ![A detailed component interaction diagram showing: Payment (domain entity) in the center, ProcessPaymentUseCase interface above it, SavePaymentPort interface below it, PaymentService (implementing ProcessPaymentUseCase) in the application layer, PaymentController (inbound adapter) connecting via use case, and PaymentPersistenceAdapter (outbound adapter) implementing the SavePaymentPort with PaymentJpaEntity. Use color coding and arrows to show interface implementations and dependencies.](https://miro.medium.com/1*ev1oXZACwF_up5fnDCvNhg.png)
-
 
 A practical structure for a hexagonal Spring Boot service usually looks like this:
 
@@ -316,6 +315,8 @@ This split matters because retry policy, HTTP timeouts, payload validation, cach
 
 A lot of articles treat CQRS like a dramatic architectural leap. In many Java backends, it appears in a much smaller and more useful form.
 
+![Read and write flows in a hexagonal backend](/assets/img/uploads/hexagonal-read-write-flow.svg)
+
 If reads and writes already have different behavior, different performance requirements, and different models, it is often enough to separate query and command ports.
 
 That is already a CQRS-style decision:
@@ -335,9 +336,9 @@ This is not full CQRS. There is no separate read database, no asynchronous proje
 
 In practice, this buys you a lot:
 
-- the read side can optimize for filtering, sorting, pagination, and caching
-- the write side can optimize for consistency, idempotency, and synchronization logic
-- tests become more focused because the contracts are narrower
+* the read side can optimize for filtering, sorting, pagination, and caching
+* the write side can optimize for consistency, idempotency, and synchronization logic
+* tests become more focused because the contracts are narrower
 
 This is one of those places where I think pragmatism matters more than purity. You do not need the full CQRS stack to benefit from the idea.
 
@@ -349,11 +350,11 @@ The most visible one is Dependency Inversion. Application services depend on abs
 
 Single Responsibility also becomes easier to enforce when boundaries are explicit:
 
-- controllers deal with HTTP
-- schedulers trigger use cases
-- adapters handle translation
-- application services orchestrate
-- domain objects protect business rules
+* controllers deal with HTTP
+* schedulers trigger use cases
+* adapters handle translation
+* application services orchestrate
+* domain objects protect business rules
 
 Clean Architecture and Onion Architecture belong to the same family of ideas. The naming differs, but the core intention is similar: keep business rules in the center and push technology outward.
 
@@ -365,11 +366,11 @@ The strongest argument for the pattern is rarely the diagram. It is the test sui
 
 A service designed around ports is much easier to test in layers:
 
-- domain tests for invariants
-- application service tests with mocked ports
-- adapter integration tests for persistence or external clients
-- controller tests for request and response mapping
-- architecture tests to enforce dependency rules
+* domain tests for invariants
+* application service tests with mocked ports
+* adapter integration tests for persistence or external clients
+* controller tests for request and response mapping
+* architecture tests to enforce dependency rules
 
 A unit test for the synchronization flow can stay fast and precise:
 
@@ -421,6 +422,8 @@ Without those checks, many projects keep the folder names and lose the architect
 
 There are a few mistakes I keep seeing in Java teams that adopt hexagonal structure too literally.
 
+![Matrix architect talking about mistakes](/assets/img/uploads/architect.png)
+
 ### 1. Ports everywhere
 
 If a dependency is not a real boundary, do not force it into a port. A `LoggerPort` is almost always a smell. A `ClockPort` often is too. Architectural boundaries should represent things that may vary independently or that materially affect testability and coupling.
@@ -446,4 +449,3 @@ But once a system has real boundaries, external integrations, read and write flo
 My main conclusion is probably the least glamorous one: the value of Hexagonal Architecture is not that it looks clean, but that it makes volatile parts of the system easier to replace without dragging the core with them. DDD helps when it gives those core concepts a proper shape. CQRS helps when reads and writes are meaningfully different. SOLID helps when the abstractions stay honest.
 
 That mix, applied with restraint, is usually a better engineering decision than either extreme: a tightly coupled layered service on one side, or a pattern-heavy architecture with abstractions nobody actually needs on the other.
-
