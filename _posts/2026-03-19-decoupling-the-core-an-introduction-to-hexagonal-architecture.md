@@ -442,10 +442,8 @@ Folders help, but they do not enforce anything by themselves. Dependency rules, 
 
 ## Conclusions
 
-Hexagonal Architecture is not a silver bullet, and it is not the right answer for every Java application. For a small CRUD service with little business logic and few external dependencies, it can add more ceremony than value.
+Hexagonal Architecture is not a silver bullet, and it is not the right answer for every application. For a small CRUD service with minimal business logic and few external dependencies, it might add more complexity than value. But for growing backends, especially in fast-moving industries like fintech, healthtech, or any domain with complex rules and frequent pivots, it is often the most solid long-term investment.
 
-But once a system has real boundaries, external integrations, read and write flows that differ, or domain rules worth protecting, the pattern becomes a very practical investment. It keeps changes local. It makes tests faster. It reduces framework leakage. It gives the domain room to exist as something more than a set of DTOs.
+I've worked on systems where we've replaced entire infrastructure stacks, migrating from monoliths to microservices, switching message queues, or integrating new database systems, with minimal changes to core logic. That stability in the center while everything around it evolves is what makes the pattern powerful.
 
-My main conclusion is probably the least glamorous one: the value of Hexagonal Architecture is not that it looks clean, but that it makes volatile parts of the system easier to replace without dragging the core with them. DDD helps when it gives those core concepts a proper shape. CQRS helps when reads and writes are meaningfully different. SOLID helps when the abstractions stay honest.
-
-That mix, applied with restraint, is usually a better engineering decision than either extreme: a tightly coupled layered service on one side, or a pattern-heavy architecture with abstractions nobody actually needs on the other.
+My advice: Start small and don't over-engineer. Apply the pattern to domains where volatility and growth risk are highest. If you're building a payment processing engine or a complex workflow system, hexagonal architecture makes sense from day one. If you're building a simple backend for a mobile app with CRUD operations, maybe start traditionally and refactor toward hexagonal boundaries as complexity grows. You can introduce ports and adapters incrementally, they're just interfaces and implementations, after all.
