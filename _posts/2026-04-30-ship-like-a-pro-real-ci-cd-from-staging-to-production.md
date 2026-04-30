@@ -2,14 +2,15 @@
 date: 2026-04-29 21:34:21
 layout: post
 title: "Ship Like a Pro: Real CI/CD from Staging to Production"
+subtitle: Quality, security and automation built into every deployment
 description: Build a robust CI/CD pipeline covering deployments, code quality,
   security, and automation. Learn practical best practices and pitfalls from
   staging to production
 image: /assets/img/uploads/3b38ce74-937f-4ee0-adca-fe8e1ecc2922.png
 optimized_image: /assets/img/uploads/3b38ce74-937f-4ee0-adca-fe8e1ecc2922.png
 author: malkomich
-permalink: /ship-like-a-pro:-real-ci/cd-from-staging-to-production/
-category: devops
+permalink: /2026-04-30-ship-like-a-pro-real-ci-cd-from-staging-to-production/
+category: ci/cd
 tags:
   - ci-cd
   - devops
@@ -23,12 +24,11 @@ In some companies I’ve worked with, deployments were far from simple. They inv
 
 CI/CD isn't just about pressing a button to deploy code. We're talking about a fully-automated, production-grade pipeline that ensures the best code meets the strictest quality and security gates before ever touching production. In this guide, I'll show you how to architect a resilient, real-world pipeline from scratch, walking through testing, deployments, code quality, security, automation, documentation, and notifications. I'll reference Java and Spring Boot with GitHub Actions for specifics, but the underlying patterns apply to any modern stack.
 
----
+- - -
 
 ## 1. Continuous Integration: Build, Test, and Validate
 
 ![Example CI/CD Pipeline Diagram](https://miro.medium.com/v2/resize:fit:700/0*z54au1g-UMgWaaxI)
-
 
 A robust CI flow needs to run automated unit, integration, and API tests on every push. Beyond that, it should enforce linting and code formatting standards, track code coverage to prevent untested changes from slipping through, and generate deployable artifacts like JARs or Docker images. These aren't nice-to-haves, they're the bare minimum for shipping with confidence.
 
@@ -77,13 +77,11 @@ Determinism is your friend. Cache dependencies aggressively to avoid flaky build
 
 ![GitHub Actions Workflow UI](https://tech-insider.org/wp-content/uploads/2026/03/github-actions-ci-cd-pipeline-tutorial-2026-1.jpg)
 
----
+- - -
 
 ## 2. Continuous Deployment: Automate Staging and Production
 
 ![A branching deployment architecture diagram showing: main branch → automatic staging deployment, version tags (v*) → manual approval gate → production deployment. Should illustrate environment isolation with separate config/secrets for staging vs production, and the approval/promotion flow between environments.](https://substackcdn.com/image/fetch/$s_!wdf_!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F66620c78-bbcb-40cc-bd57-2829c4201a0b_824x610.png)
-
-
 
 Too often, CI stops at artifact production. Teams build the perfect JAR or Docker image, then manually copy it to servers or click through deployment UIs. This is where most "CI/CD" implementations fail, they're really just CI. To truly ship like a pro, you must automate deployments not just to production, but to a dedicated staging environment that mirrors your live stack as closely as possible.
 
@@ -126,13 +124,11 @@ jobs:
 
 This approach ensures your environments stay isolated, with secrets injected for the right context. The deployment script can be as simple or complex as your infrastructure requires; the key is that it's automated, repeatable, and environment-aware. In my experience, teams that nail this pattern ship faster and sleep better. **NEVER** hard-code credentials or use the same config for both environments, this is how production databases disappear or get corrupted.
 
----
+- - -
 
 ## 3. Code Quality: Linters, Static Analysis, and Quality Gates
 
 ![A SonarQube quality gate dashboard mockup or diagram showing: test coverage percentage, code duplication metrics, security hotspots, cognitive complexity distribution, and how the pipeline blocks merge when thresholds aren't met. Should visualize the blocking mechanism and multi-dimensional quality metrics.](https://kodekloud.com/kk-media/image/upload/v1752879617/notes-assets/images/Jenkins-Pipelines-SonarQube-Quality-Gate-Step-and-Refactoring/jenkins-sonarqube-cicd-integration-flowchart.jpg)
-
-
 
 Having tests is great, but that's not enough. Codebases rot when you lack automated quality controls. I've inherited projects with 90% test coverage that were still nightmares to maintain because nobody enforced code style, complexity limits, or duplication checks. Tests verify behavior, but quality tools verify maintainability.
 
@@ -153,15 +149,13 @@ The magic happens when you configure quality gates; rules like zero new code dup
 
 In production environments, I recommend starting with lenient quality gates and tightening them over time. Trying to enforce 90% coverage and zero code smells on a legacy codebase will just encourage developers to disable the checks. Instead, use the "new code" approach, only enforce strict rules on code written after you enable the gates. This makes the medicine easier to swallow while still preventing new technical debt.
 
-![SonarQube Dashboard Example](https://www.sonarsource.com/images/screenshots/sonarqube/dashboard_home.png)
+![SonarQube Dashboard Example](/assets/img/uploads/captura-de-pantalla-2026-04-30-a-las-13.08.39.png)
 
----
+- - -
 
 ## 4. Security: SAST, IaC Scanning, and Dependency Management
 
 ![A security scanning pipeline diagram showing three parallel security checks: SAST (CodeQL) scanning source code → IaC scanning (KICS) checking Terraform/K8s manifests → Dependency scanning (Dependabot) checking libraries. Should show how findings feed into a consolidated security report that can block deployment.](https://www.paloaltonetworks.com/content/dam/pan/en_US/images/cyberpedia/CI_CD%20Security%20-%201.png?imwidth=480)
-
-
 
 CI/CD pipelines are a sweet vector for attackers: one leaked secret or vulnerable dependency, and you could be the next cautionary tale.
 
@@ -171,18 +165,18 @@ The beauty of security automation is that it scales infinitely better than manua
 
 ```yaml
 - name: Initialize CodeQL
-  uses: github/codeql-action/init@v3
+  uses: github/codeql-action/init@v4
   with:
     languages: java
 - name: Perform CodeQL Analysis
-  uses: github/codeql-action/analyze@v3
+  uses: github/codeql-action/analyze@v4
 ```
 
 For infrastructure security, KICS scans your IaC files and fails the build when it finds high-severity issues. This catches problems like overly permissive security groups, unencrypted storage, or exposed credentials before they ever reach AWS or GCP:
 
 ```yaml
 - name: Scan IaC with KICS
-  uses: checkmarx/kics-action@v2
+  uses: checkmarx/kics-github-action@v2.1.20
   with:
     path: './infra/'
     fail_on: 'high'
@@ -190,15 +184,11 @@ For infrastructure security, KICS scans your IaC files and fails the build when 
 
 The critical mindset shift is treating security findings as showstoppers, not nice-to-have reports. When a developer introduces a SQL injection vulnerability, they should learn about it in CI within minutes, not weeks later from a penetration test. This protects your users and your business while building security awareness into your engineering culture.
 
-![CodeQL Security Dashboard](https://docs.github.com/assets/cb-78192/images/help/code-security/code-scanning-codeql-analysis.png)
-
----
+- - -
 
 ## 5. Container Security: Ship Clean Images
 
 ![A multi-stage Docker build diagram showing: Source Code → Builder Stage (compile) → Runtime Stage (minimal base image) → Trivy Vulnerability Scan → Registry Push decision point. Should illustrate how minimal final images reduce attack surface and where Trivy scanning gates artifact promotion.](https://storage.ghost.io/c/5f/2f/5f2f4d20-2abf-4534-8d40-7aa233aedd43/content/images/2026/03/build-promotion.png)
-
-
 
 As Dockerized apps become the norm, image security can't be an afterthought. I've learned to never trust an image, not even official ones. Base images get compromised, dependencies ship with vulnerabilities, and misconfigurations create attack surfaces. Production platforms need multi-stage builds to minimize image size and attack surface, plus automated vulnerability scanning before any image reaches a registry.
 
@@ -206,7 +196,7 @@ Trivy is the go-to scanner because it's fast, accurate, and catches vulnerabilit
 
 ```yaml
 - name: Run Trivy image scan
-  uses: aquasecurity/trivy-action@v0.16.0
+  uses: aquasecurity/trivy-action@v0.36.0
   with:
     image-ref: ghcr.io/org/repo:${GITHUB_SHA}
     format: 'table'
@@ -217,9 +207,9 @@ Docker best practices make scanning more effective. Start from minimal base imag
 
 Production teams integrate these checks before pushing images or running deploy scripts. If Trivy finds criticals, the image never makes it to the registry. This creates a clean boundary where only vetted, scanned artifacts ever reach staging or production environments. I've found this catches problems that would otherwise lurk for months until an attacker or security audit discovers them.
 
-![Trivy Scan Example](https://aquasecurity.github.io/trivy/v0.16.0/images/trivy-stats.png)
+![Trivy Scan Example](/assets/img/uploads/captura-de-pantalla-2026-04-30-a-las-13.22.45.png)
 
----
+- - -
 
 ## 6. Documentation Automation: Always Up to Date
 
@@ -233,7 +223,7 @@ The implementation is simpler than you might expect. Generate the OpenAPI specif
 - name: Generate OpenAPI Docs
   run: mvn springdoc-openapi:generate
 - name: Publish Docs to GitHub Pages
-  uses: peaceiris/actions-gh-pages@v3
+  uses: peaceiris/actions-gh-pages@v4
   with:
     github_token: ${{ secrets.GITHUB_TOKEN }}
     publish_dir: ./target/generated-docs
@@ -242,7 +232,7 @@ The implementation is simpler than you might expect. Generate the OpenAPI specif
 
 The trick is never depending on developers to remember manual steps. Let the pipeline enforce contract accuracy through automation. Similarly, use tools like MkDocs for prose documentation or Javadoc for code references, and automate artifact uploads. In my experience, teams with automated documentation spend less time answering "how do I call this endpoint" questions and more time building features.
 
----
+- - -
 
 ## 7. Smart Notifications: Never Miss a Beat
 
@@ -254,21 +244,19 @@ Store webhook URLs as secrets and send contextual notifications. Success notific
 
 ```yaml
 - name: Notify Slack
-  uses: slackapi/slack-github-action@v1.23.0
+  uses: slackapi/slack-github-action@v3.0.2
   with:
+    webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+    webhook-type: incoming-webhook
     payload: |
       {
-        "text": "✅ Deployment to ${DEPLOY_ENV} succeeded for commit ${GITHUB_SHA}"
+        "text": "✅ Deployment to ${{ env.DEPLOY_ENV }} succeeded for commit ${{ github.sha }}"
       }
-  env:
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
 The sophistication can grow with your needs. Advanced implementations send different notifications for failures versus successes, include deployment metrics like duration and size, and create threads for ongoing incidents. The goal is making your pipeline observable without creating alert fatigue.
 
-![GitHub Actions Slack Notification](https://github-images.s3.amazonaws.com/blog/2020/Slack-GitHub-Integration/github-slack-integration.gif)
-
----
+- - -
 
 ## Conclussions
 
