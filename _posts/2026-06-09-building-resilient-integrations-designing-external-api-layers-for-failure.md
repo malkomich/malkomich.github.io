@@ -21,6 +21,7 @@ tags:
   - observability
   - backend
   - software-engineering
+  - python
 paginate: false
 ---
 External services will fail. The usual mistake is to treat the external service as if it were part of your own codebase. It is not. A third party can change behavior, return malformed data, or fail at the worst possible time. A resilient system assumes that from the start, then places clear boundaries around that risk.
@@ -30,7 +31,6 @@ The goal is not to avoid risk, because that is impossible when you depend on ser
 ## 1. The real problem with third party dependencies
 
 ![A cascading failure diagram showing how a single slow/failed external API call propagates through a system: external API → integration layer → application service → thread pool exhaustion → cascading timeouts across multiple dependent services. Should illustrate the domino effect with clear cause-and-effect arrows.](https://miro.medium.com/1*GfEGLpGFTTo7xasbWgzbzA.png)
-
 
 Building integrations with external APIs feels great when things work. You wire up a few endpoints, parse some JSON, and your app gains capabilities that would take months to build from scratch. But real production environments are messier, and the gap between "works in development" and "survives production" is where most of the pain appears.
 
@@ -50,7 +50,7 @@ At first glance, this works perfectly for a demo. You run it in your test enviro
 
 ## 2. Timeouts, retries, and circuit breakers: taking back control
 
-![A timeline graph comparing two retry strategies: naive aggressive retries (vertical spike causing request storm) versus exponential backoff with jitter (smooth exponential curve). Should show how exponential backoff prevents overwhelming a recovering service while naive retries create thundering herd problem.](https://chatgpt.com/backend-api/estuary/content?id=file_00000000f27c71f4bc31d13fbd2153b1&ts=494726&p=fs&cid=1&sig=41531c4d41a3b5234733a84e6513289606a573240f61db03fb790ea7720b3cf5&v=0)
+![A timeline graph comparing two retry strategies: naive aggressive retries (vertical spike causing request storm) versus exponential backoff with jitter (smooth exponential curve). Should show how exponential backoff prevents overwhelming a recovering service while naive retries create thundering herd problem.](/assets/img/uploads/chatgpt-image-jun-9-2026-05_00_19-pm.png)
 
 Timeouts are the first line of defense. So every single HTTP call should have an explicit deadline.
 
@@ -237,6 +237,8 @@ The point is not to fail silently or return incorrect data. We're making an expl
 
 ## 6. Observability: logs, metrics, and actionable errors
 
+![Observability dashboard showing logs, metrics, and alert context](/assets/img/uploads/67b7496facd94ae53619316f_top-8-observability-tools-for-2025_-go-from-data-to-action_003.png)
+
 If you can't see what's happening at your integration boundaries, you can't control them. Observability isn't an afterthought, it's a core requirement of resilient design.
 
 Your integration layer needs instrumentation at every decision point. When you fall back to cache, log it. When a circuit breaker opens, emit a metric. When validation fails, capture the malformed response. When retries exhaust, record the failure chain. This telemetry serves multiple purposes: it helps you debug live issues, it reveals patterns in provider behavior, it validates that your defensive strategies are working, and it provides evidence when you need to have difficult conversations with vendors about their SLA compliance.
@@ -353,7 +355,7 @@ def test_circuit_breaker_opens_after_failures():
         breaker.call(failing_function)
 ```
 
-These unit tests give you confidence that your defensive code actually works. But they can't catch everything. You also need integration tests that exercise the real API, or at least a high-fidelity test double. These tests catch contract drift, schema changes, and subtle behavioral differences that mocks can't reveal.
+These unit tests give you confidence that your defensive code actually works. But they can't catch everything. You also need integration tests that exercise the real API, or at least a high-fidelity test double.
 
 These aren't part of the critical path, but they run continuously and alert when responses change unexpectedly. This is your early warning system for breaking changes.
 
