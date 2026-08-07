@@ -8,8 +8,10 @@ subtitle: A hands-on workshop on Transactional Outbox, retry topics, Dead Letter
 description: Build an event-driven order workflow using Java, Spring Boot, and
   Kafka. Learn Outbox Pattern, retry topics, DLQs, idempotency, consumer groups,
   and Exactly Once Semantics through practical examples.
+image: /assets/img/uploads/chatgpt-image-aug-7-2026-03_42_47-pm.png
+optimized_image: /assets/img/uploads/chatgpt-image-aug-7-2026-03_42_47-pm.png
 author: malkomich
-permalink: /inside-a-kafka-order-workflow:-outbox,-retries,-dlqs-and-idempotency/
+permalink: /2026-08-07-inside-a-kafka-order-workflow-outbox-retries-dlqs-and-idempotency/
 category: software-arquitecture
 tags:
   - kafka
@@ -22,35 +24,9 @@ tags:
   - architexture
 paginate: false
 ---
-```mermaid
-graph TD
-  A[Client]
-  B[order-service]
-  C[payment-service]
-  D[inventory-service]
-  E[notification-service]
-  F(PostgreSQL - Order DB)
-  G(orders.outbox)
-  H(Kafka Broker\norder.created, payment.outcome, inventory.outcome,\norders.retry.1, orders.retry.2, orders.dlt)
-
-  A -->|POST /orders| B
-  B -->|save order + outbox| F
-  F --> G
-  G -->|Polls + publishes event| H
-  H --> C
-  H --> D
-  H --> E
-```
-
-> **Diagram context:** This workflow covers order creation, payment, inventory, and notification. It omits classic distributed failures—like dual writes, duplicate deliveries, ordering issues, stalled partitions, dead-lettered messages, and the exact limits of Kafka's transactional features.
-
----
-
 ## 1. The Naive Workflow: First Failure Strikes
 
 ![A sequence diagram showing the dual-write problem: (1) Database transaction commits successfully, (2) Network fails before Kafka send, (3) Order exists in DB but event never reaches Kafka. Show both success and failure paths with timeline indicators.](https://images.ctfassets.net/8vofjvai1hpv/5947ZdOee28dmg5zNmyRcr/28c3d22701a39ad892ee0b22d7aa5584/4.png)
-
-
 
 When you're building your first event-driven service with Kafka, the initial implementation feels natural and clean. You have a REST endpoint that saves an order to the database and publishes an event to Kafka. The code is straightforward, and in development, everything works perfectly.
 
@@ -71,13 +47,11 @@ The inverse failure is equally painful. Sometimes the Kafka send succeeds, but a
 
 I've debugged this scenario more times than I'd like to admit. The fundamental issue is that you're performing two separate writes—one to PostgreSQL, one to Kafka—and treating them as if they're atomic when they're not. Database transactions can't span external systems. This is the dual-write problem, and it's the first reliability wall every Kafka developer hits.
 
----
+- - -
 
 ## 2. Transactional Outbox: Escaping Dual-Write Hell
 
 ![A before/after architecture diagram comparing naive approach vs outbox pattern. Left side shows direct dual writes to DB and Kafka (with X marks for failure points). Right side shows atomic single transaction to DB+outbox table, then separate async publisher polling outbox and sending to Kafka.](https://chairnerd.seatgeek.com/images/transactional-outbox-pattern/outbox-flow.svg)
-
-
 
 The transactional outbox pattern emerged from a simple insight: if you can't make two separate systems transactional, make one system the source of truth and derive the other from it. Instead of writing to both the database and Kafka in the same code path, you write both the business data and the *intent to publish* into the same database transaction. A separate process reads that intent and publishes to Kafka.
 
@@ -130,7 +104,7 @@ Some teams use Change Data Capture tools like Debezium to stream outbox changes 
 
 [Read about the Outbox pattern](https://microservices.io/patterns/data/transactional-outbox.html)
 
----
+- - -
 
 ## 3. Idempotent Consumers: Payment's Reality Check
 
@@ -163,13 +137,11 @@ The event ID must be stable across retries. You can't use a timestamp or a rando
 
 It's worth distinguishing between Kafka's producer idempotence and consumer idempotence. When you enable idempotent producers in Kafka, you're preventing duplicate messages caused by producer retries and network issues at the protocol level. That's valuable, but it doesn't prevent your business logic from executing twice if the same conceptual event arrives from two different sources or publishing attempts. Consumer idempotence is about protecting your business invariants, not just message delivery semantics.
 
----
+- - -
 
 ## 4. Retry Topics: Handling Temporary Glitches Without Partition Stalls
 
 ![A message flow diagram showing: original topic → consumer processes message → failure occurs → message routes to retry topic with backoff delay → retry consumer processes it → success OR exhausts retries → routes to DLT. Include timing annotations showing delay between retry attempts.](https://miro.medium.com/v2/resize:fit:1400/1*46dJiQgbH_FS8c6Ed4EyGA.png)
-
-
 
 Real distributed systems are filled with transient failures. The payment provider times out but succeeds on retry. The inventory database is under load and rejects connections for thirty seconds. An external API returns 503 but recovers moments later. Traditional retry approaches handle these by blocking: catch the exception, sleep, try again. The problem is that while you're sleeping, your Kafka consumer is stuck. No other messages in that partition get processed until the retry succeeds or gives up.
 
@@ -202,7 +174,7 @@ One pattern I've learned to avoid: infinite retries. If a message has failed ten
 
 [Spring Kafka Retry Topics Reference](https://docs.spring.io/spring-kafka/reference/retrytopic/how-the-pattern-works.html)
 
----
+- - -
 
 ## 5. Dead Letter Topic (DLT): The Final Rest Stop
 
@@ -228,13 +200,11 @@ Using a Kafka UI tool like Conduktor or Kafka UI makes DLT management dramatical
 
 [DLT and retry strategies](https://docs.spring.io/spring-kafka/reference/retrytopic/dlt-strategies.html)
 
----
+- - -
 
 ## 6. Consumer Groups, Partitions, Ordering: Concurrency Without Chaos
 
 ![A horizontal architecture diagram showing: Topic with 4 partitions, 3 consumer instances in a consumer group with partition assignment distribution (e.g., Instance 1 → Partition 0,1; Instance 2 → Partition 2; Instance 3 → Partition 3). Include message flow showing same order ID always routes to same partition.](https://blog.nashtechglobal.com/wp-content/uploads/2025/10/image-72.png)
-
-
 
 Kafka achieves horizontal scalability through partitioning. A topic splits into multiple partitions, and each partition is independently consumable. When you run multiple instances of a service, Kafka assigns partitions to different instances, allowing parallel processing. Your maximum concurrency is bounded by the number of partitions—if you have four partitions, running eight consumer instances doesn't increase throughput.
 
@@ -252,13 +222,11 @@ The partition count decision is architectural. Too few partitions and you can't 
 
 One trap to avoid: assuming global ordering when you actually have per-partition ordering. If you partition by order ID but expect all events across all orders to maintain creation timestamp order, you'll be disappointed. Partition ordering is strict and reliable; cross-partition ordering doesn't exist without additional application-level logic like vector clocks or sequence numbers.
 
----
+- - -
 
 ## 7. Exactly Once Semantics: Understanding the Boundaries
 
 ![A layered diagram showing three concentric boundaries: innermost = Kafka transactions scope (producer/offsets only), middle = Producer idempotence scope (delivery-level duplicates), outermost = Consumer idempotency scope (business logic execution). Label what each layer protects and what it doesn't (external systems like databases, APIs).](https://activewizards.com/images/blog/kafka-eos3.svg)
-
-
 
 The term "exactly once" in Kafka generates more confusion than almost any other concept. Developers hear it and assume it means their business logic executes exactly once per event, no matter what failures occur. That's not what Kafka's exactly-once semantics guarantee, and understanding the actual scope is crucial for building reliable systems.
 
@@ -294,7 +262,7 @@ In practice, I've found that enabling idempotent producers is a no-brainer—it'
 
 [Kafka Delivery Semantics](https://docs.confluent.io/kafka/design/delivery-semantics.html)
 
----
+- - -
 
 ## 8. Putting It Together: Complete Scenario Walkthrough
 
@@ -321,7 +289,11 @@ docker-compose exec order-service curl http://localhost:8080/orders
 
 What you've built isn't just code—it's a system with explicit guarantees and well-defined failure modes. Orders won't disappear silently. Duplicate processing won't cause duplicate charges. Transient failures won't stall the entire system. Permanent failures won't create infinite retry loops. Each pattern addresses a specific class of failure, and together they form a resilient whole.
 
----
+![](/assets/img/uploads/untitled-diagram-2026-08-07-113500.png "Workflow diagram")
+
+> **Diagram context:** This workflow covers order creation, payment, inventory, and notification. It omits classic distributed failures—like dual writes, duplicate deliveries, ordering issues, stalled partitions, dead-lettered messages, and the exact limits of Kafka's transactional features.
+
+- - -
 
 ## Key Takeaways: Reliability is Layered, Not Magic
 
@@ -337,7 +309,7 @@ The exactly-once semantics discussion reveals an important principle: understand
 
 In practice, I've found that most reliability bugs come from implicit assumptions rather than missing patterns. Assuming that if the database commit succeeds, Kafka send will too. Assuming that processing a message once means your business logic executes once. Assuming that message order is global rather than per-partition. Making these assumptions explicit, then systematically addressing each one with appropriate patterns, is how you build systems that survive production.
 
----
+- - -
 
 ## What the Workflow Can Survive Now
 
@@ -347,7 +319,7 @@ Payment provider timeouts don't stall the system—retry topics handle them with
 
 Perhaps most importantly, the system's failure modes are well-defined and observable. You're not debugging mysterious data inconsistencies or chasing phantom events. When something goes wrong, you have specific places to look: the outbox table for unpublished events, the DLT for unprocessable messages, idempotency tables for processing history, Kafka UI for partition lag and consumer health.
 
----
+- - -
 
 ## Workflow Reliability Checklist
 
@@ -355,16 +327,16 @@ The patterns we've covered form a reliability checklist that you can apply to an
 
 Non-blocking retries via retry topics maintain system throughput during transient failures. DLT handlers with monitoring and ownership prevent infinite failure loops and create operational visibility. Kafka keying by business identifiers preserves ordering per entity while enabling parallelism across entities. Understanding exactly-once semantics boundaries prevents over-reliance on infrastructure guarantees that don't extend to external state.
 
-- [x] Atomic write: business data + outbox row
-- [x] Stable event IDs per real-world action
-- [x] Idempotent producer: `acks=all`, `enable.idempotence=true`
-- [x] Idempotent consumer: track processed event IDs
-- [x] Non-blocking retries via retry topics
-- [x] DLT handler, with monitoring and ownership
-- [x] Kafka keying by business ID for partition ordering
-- [x] Clear Exactly Once Semantics boundary
+* Atomic write: business data + outbox row
+* Stable event IDs per real-world action
+* Idempotent producer: `acks=all`, `enable.idempotence=true`
+* Idempotent consumer: track processed event IDs
+* Non-blocking retries via retry topics
+* DLT handler, with monitoring and ownership
+* Kafka keying by business ID for partition ordering
+* Clear Exactly Once Semantics boundary
 
----
+- - -
 
 ## Next Steps: Testcontainers and Failure Injection
 
@@ -374,13 +346,13 @@ Write tests that crash the outbox publisher mid-send and verify duplicate detect
 
 The goal isn't to prevent all failures. Failures will happen. The goal is to ensure that when they do, your system degrades gracefully, maintains its invariants, and provides the visibility needed to understand and recover. That's the difference between a system that's theoretically reliable and one that's actually reliable in production.
 
----
+- - -
 
 ## Citations / Further Reading
 
-- [11 Kafka Design Patterns - Reliability & Ordering Deep Dive](https://mvineetsharma.medium.com/11-kafka-design-patterns-reliability-ordering-deep-dive-6c749a897302)
-- [How to scale Kafka maintaining Order of events](https://dev.to/amitjkamble/kafka-ordering-in-the-real-world-how-to-scale-without-killing-performance-37fo)
-- [How to Handle Message Ordering in Kafka Partitions](https://oneuptime.com/blog/post/2026-01-24-handle-message-ordering-kafka-partitions/view)
-- [Kafka Topic Design Guidelines](https://www.conduktor.io/glossary/kafka-topic-design-guidelines)
-- [Spring Kafka Retry Topics](https://docs.spring.io/spring-kafka/reference/retrytopic/how-the-pattern-works.html)
-- [Kafka Delivery Semantics](https://docs.confluent.io/kafka/design/delivery-semantics.html)
+* [11 Kafka Design Patterns - Reliability & Ordering Deep Dive](https://mvineetsharma.medium.com/11-kafka-design-patterns-reliability-ordering-deep-dive-6c749a897302)
+* [How to scale Kafka maintaining Order of events](https://dev.to/amitjkamble/kafka-ordering-in-the-real-world-how-to-scale-without-killing-performance-37fo)
+* [How to Handle Message Ordering in Kafka Partitions](https://oneuptime.com/blog/post/2026-01-24-handle-message-ordering-kafka-partitions/view)
+* [Kafka Topic Design Guidelines](https://www.conduktor.io/glossary/kafka-topic-design-guidelines)
+* [Spring Kafka Retry Topics](https://docs.spring.io/spring-kafka/reference/retrytopic/how-the-pattern-works.html)
+* [Kafka Delivery Semantics](https://docs.confluent.io/kafka/design/delivery-semantics.html)
