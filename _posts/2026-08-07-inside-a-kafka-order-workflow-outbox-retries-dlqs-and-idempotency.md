@@ -21,7 +21,7 @@ tags:
   - reliability
   - idempotency
   - dlq
-  - architexture
+  - architecture
 paginate: false
 ---
 ## 1. The Naive Workflow: First Failure Strikes
